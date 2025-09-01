@@ -1,0 +1,23 @@
+{% extends 'myapp/base.html' %}
+
+{% block title %}AI Prediction Result{% endblock %}
+
+{% block content %}
+<div class="container text-center mt-5">
+    <h2>🌾 AI Prediction Result</h2>
+    <img src="{{ file_url }}" width="300px" class="img-thumbnail">
+    
+    <p><strong>🩺 Disease Detected:</strong> <span style="color: {% if 'Healthy' in result %}green{% else %}red{% endif %};">
+        {{ result }}</span></p>
+    
+    <p><strong>📊 Confidence:</strong> {{ confidence }}%</p>
+
+    {% if "Healthy" in result %}
+        <p class="text-success">✅ The plant is healthy. No action needed!</p>
+    {% else %}
+        <p class="text-danger">🚨 The plant has a disease. Consider treatment.</p>
+    {% endif %}
+
+    <a href="{% url 'plant_disease_detection' %}" class="btn btn-primary">🔄 Analyze Another Image</a>
+</div>
+{% endblock %}

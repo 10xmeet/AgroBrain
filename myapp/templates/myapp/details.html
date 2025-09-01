@@ -1,0 +1,562 @@
+{% extends 'myapp/base.html' %}
+
+{% block title %}Field Analysis - Agro Monitoring{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+
+<div class="bg-green-50 min-h-screen">
+  <div class="pt-8">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <!-- Map Section -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <div id="map" class="col-span-2 w-full h-96 rounded-2xl shadow-lg border-4 border-blue-100 z-0"></div>
+        <div class="flex flex-col gap-4">
+          <!-- Soil Data -->
+          <div class="bg-white rounded-2xl shadow-sm p-4 border border-green-100 flex items-center">
+            <div class="p-3 bg-green-100 rounded-lg mr-4">
+              <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2a10 10 0 00-3.92 19.29c.31.06.42-.13.42-.3v-1.14c-1.72.37-2.08-.83-2.08-.83-.28-.72-.69-.91-.69-.91-.56-.38.04-.37.04-.37.62.04.95.64.95.64.55.94 1.44.67 1.79.51.06-.4.22-.67.4-.82-1.37-.16-2.81-.69-2.81-3.08 0-.68.24-1.24.64-1.68-.06-.16-.28-.82.06-1.71 0 0 .52-.17 1.7.64a5.9 5.9 0 013.1 0c1.18-.81 1.7-.64 1.7-.64.34.89.12 1.55.06 1.71.4.44.64 1 .64 1.68 0 2.4-1.44 2.92-2.81 3.08.22.19.42.56.42 1.13v1.68c0 .17.11.36.42.3A10 10 0 0012 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold text-green-800 mb-2">Soil Data</h3>
+              <p class="text-green-600">Moisture: {{ soil.moisture }}</p>
+              <p class="text-green-600">Temperature (10cm): {{ soil.t10 }} K</p>
+              <p class="text-green-600">Temperature (0cm): {{ soil.t0 }} K</p>
+            </div>
+          </div>
+          <!-- UV Index Data -->
+          <div class="bg-white rounded-2xl shadow-sm p-4 border border-yellow-100 flex items-center">
+            <div class="p-3 bg-yellow-100 rounded-lg mr-4">
+              <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2a10 10 0 00-3.92 19.29c.31.06.42-.13.42-.3v-1.14c-1.72.37-2.08-.83-2.08-.83-.28-.72-.69-.91-.69-.91-.56-.38.04-.37.04-.37.62.04.95.64.95.64.55.94 1.44.67 1.79.51.06-.4.22-.67.4-.82-1.37-.16-2.81-.69-2.81-3.08 0-.68.24-1.24.64-1.68-.06-.16-.28-.82.06-1.71 0 0 .52-.17 1.7.64a5.9 5.9 0 013.1 0c1.18-.81 1.7-.64 1.7-.64.34.89.12 1.55.06 1.71.4.44.64 1 .64 1.68 0 2.4-1.44 2.92-2.81 3.08.22.19.42.56.42 1.13v1.68c0 .17.11.36.42.3A10 10 0 0012 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold text-yellow-800 mb-2">UV Index</h3>
+              <p class="text-yellow-600">UV Index: {{ uv_index_value }}</p>
+              <p class="text-yellow-600">Date: {{ uv_index_date }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+
+
+
+      <!-- Date Filter -->
+      <div class="bg-white rounded-2xl shadow-sm p-6 mb-2 border border-green-100">
+        <form method="get" action="{% url 'details' polygon_id %}" class="max-w-2xl mx-auto">
+          <div class="flex gap-4 flex-wrap">
+            <div class="flex-1 min-w-[200px]">
+              <label class="block text-sm font-medium text-green-700 mb-2">Start Date</label>
+              <input type="date" name="start_date" value="{{ start_date }}" 
+                     class="w-full rounded-lg border-green-200 text-green-700 focus:ring-2 focus:ring-green-300">
+            </div>
+            <div class="flex-1 min-w-[200px]">
+              <label class="block text-sm font-medium text-green-700 mb-2">End Date</label>
+              <input type="date" name="end_date" value="{{ end_date }}"
+                     class="w-full rounded-lg border-green-200 text-green-700 focus:ring-2 focus:ring-green-300">
+            </div>
+            <div class="self-end">
+              <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2.5 rounded-lg transition-colors duration-200 font-medium">
+                Update Analysis
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      
+      <!-- Vegetation Index Analysis -->
+      <div class="bg-white rounded-2xl shadow-sm p-6 mb-8 border border-green-100">
+        <div class="flex justify-between items-center mb-6">
+          <div>
+            <h3 class="text-2xl font-semibold text-green-800">Vegetation Index Analysis</h3>
+            <p class="text-green-600">Monitor your field's health with advanced vegetation indices</p>
+          </div>
+          <div class="flex items-center space-x-2">
+            <label for="index-type" class="text-sm font-medium text-green-700">Index Type:</label>
+            <select id="index-type" name="index_type" class="rounded-lg border-green-200 text-green-700 focus:ring-2 focus:ring-green-300" onchange="this.form.submit()">
+              <option value="NDVI" {% if index_type == 'NDVI' %}selected{% endif %}>NDVI</option>
+              {% for index in available_indices %}
+                {% if index != 'NDVI' %}
+                  <option value="{{ index }}" {% if index_type == index %}selected{% endif %}>{{ index }}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        
+        <!-- Vegetation Health Status -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+          <div class="bg-white p-6 rounded-xl shadow-sm border border-green-100">
+            <div class="flex items-center gap-4">
+              <div class="bg-green-100 p-3 rounded-lg">
+                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+              </div>
+              <div>
+                <p class="text-sm text-green-600">Health Status</p>
+                <p class="text-2xl font-bold text-green-800">{{ veg_index_data.health_status }}</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bg-white p-6 rounded-xl shadow-sm border border-green-100">
+            <div class="flex items-center gap-4">
+              <div class="bg-green-100 p-3 rounded-lg">
+                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                </svg>
+              </div>
+              <div>
+                <p class="text-sm text-green-600">Health Trend</p>
+                <p class="text-2xl font-bold text-green-800">{{ veg_index_data.health_trend }}</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bg-white p-6 rounded-xl shadow-sm border border-green-100">
+            <div class="flex items-center gap-4">
+              <div class="bg-green-100 p-3 rounded-lg">
+                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+              </div>
+              <div>
+                <p class="text-sm text-green-600">Latest {{ index_type }} Value</p>
+                <p class="text-2xl font-bold text-green-800">
+                  {% if veg_index_data.mean_values %}
+                    {{ veg_index_data.mean_values|last|floatformat:2 }}
+                  {% else %}
+                    N/A
+                  {% endif %}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Vegetation Index Chart -->
+        <div id="line-chart" class="h-80"></div>
+        
+        <!-- Interpretation Guide -->
+        <div class="mt-6 p-4 bg-green-50 rounded-lg">
+          <h4 class="font-semibold text-green-800 mb-2">Interpretation Guide</h4>
+          <ul class="text-sm text-green-700 space-y-1">
+            <li><span class="font-medium">NDVI (0.0-0.2):</span> Barren soil, rocks, or dead vegetation</li>
+            <li><span class="font-medium">NDVI (0.2-0.4):</span> Sparse vegetation, early growth stage</li>
+            <li><span class="font-medium">NDVI (0.4-0.6):</span> Moderate vegetation, developing crops</li>
+            <li><span class="font-medium">NDVI (0.6-1.0):</span> Dense, healthy vegetation</li>
+          </ul>
+        </div>
+      </div>
+      {% comment %} <div class="grid grid-cols-1 md:grid-cols-1 gap-6 mb-8"> {% endcomment %}
+        {% comment %} <div class="bg-white p-6 rounded-xl shadow-sm border border-green-100">
+          <div class="flex items-center gap-4">
+            <div class="bg-green-100 p-3 rounded-lg">
+              <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-sm text-green-600">Khali Jagha 1</p>
+              <p class="text-2xl font-bold text-green-800">--</p>
+            </div>
+          </div>
+        </div> {% endcomment %}
+      
+        {% comment %} <div class="bg-white p-6 rounded-xl shadow-sm border border-green-100">
+          <div class="flex items-center gap-4">
+            <div class="bg-green-100 p-3 rounded-lg">
+              <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-sm text-green-600">Khali Jagha 2</p>
+              <p class="text-2xl font-bold text-green-800">--</p>
+            </div>
+          </div>
+        </div> {% endcomment %}
+      
+        {% comment %} <div class="flex flex-col items-center justify-center  min-h-screen text-gray-700 p-100 rounded-2xl">
+
+          <!-- Component Start -->
+          <div class="w-full max-w-screen-sm bg-white p-10 rounded-xl ring-8 ring-white ring-opacity-40">
+            <div class="flex justify-between">
+              <div class="flex flex-col">
+                <span class="text-6xl font-bold">29°C</span>
+                <span class="font-semibold mt-1 text-gray-500">Mudjimba, QLD</span>
+              </div>
+              <svg class="h-24 w-24 fill-current text-yellow-400" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.79zM1 10.5h3v2H1zM11 .55h2V3.5h-2zm8.04 2.495l1.408 1.407-1.79 1.79-1.407-1.408zm-1.8 15.115l1.79 1.8 1.41-1.41-1.8-1.79zM20 10.5h3v2h-3zm-8-5c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm-1 4h2v2.95h-2zm-7.45-.96l1.41 1.41 1.79-1.8-1.41-1.41z"/></svg>
+            </div>
+            <div class="flex justify-between mt-12">
+              <div class="flex flex-col items-center">
+                <span class="font-semibold text-lg">29°C</span>
+                <svg class="h-10 w-10 fill-current text-gray-400 mt-3" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.79zM1 10.5h3v2H1zM11 .55h2V3.5h-2zm8.04 2.495l1.408 1.407-1.79 1.79-1.407-1.408zm-1.8 15.115l1.79 1.8 1.41-1.41-1.8-1.79zM20 10.5h3v2h-3zm-8-5c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm-1 4h2v2.95h-2zm-7.45-.96l1.41 1.41 1.79-1.8-1.41-1.41z"/></svg>
+                <span class="font-semibold mt-1 text-sm">11:00</span>
+                <span class="text-xs font-semibold text-gray-400">AM</span>
+              </div>
+              <div class="flex flex-col items-center">
+                <span class="font-semibold text-lg">31°C</span>
+                <svg class="h-10 w-10 fill-current text-gray-400 mt-3" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.79zM1 10.5h3v2H1zM11 .55h2V3.5h-2zm8.04 2.495l1.408 1.407-1.79 1.79-1.407-1.408zm-1.8 15.115l1.79 1.8 1.41-1.41-1.8-1.79zM20 10.5h3v2h-3zm-8-5c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm-1 4h2v2.95h-2zm-7.45-.96l1.41 1.41 1.79-1.8-1.41-1.41z"/></svg>
+                <span class="font-semibold mt-1 text-sm">1:00</span>
+                <span class="text-xs font-semibold text-gray-400">PM</span>
+              </div>
+              <div class="flex flex-col items-center">
+                <span class="font-semibold text-lg">32°C</span>
+                <svg class="h-10 w-10 fill-current text-gray-400 mt-3" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12.01 6c2.61 0 4.89 1.86 5.4 4.43l.3 1.5 1.52.11c1.56.11 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3h-13c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.95 6 12.01 6m0-2C9.12 4 6.6 5.64 5.35 8.04 2.35 8.36.01 10.91.01 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.64-4.96C18.68 6.59 15.65 4 12.01 4z"/></svg>
+                <span class="font-semibold mt-1 text-sm">3:00</span>
+                <span class="text-xs font-semibold text-gray-400">PM</span>
+              </div>
+              <div class="flex flex-col items-center">
+                <span class="font-semibold text-lg">31°C</span>
+                <svg class="h-10 w-10 fill-current text-gray-400 mt-3" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12.01 6c2.61 0 4.89 1.86 5.4 4.43l.3 1.5 1.52.11c1.56.11 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3h-13c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.95 6 12.01 6m0-2C9.12 4 6.6 5.64 5.35 8.04 2.35 8.36.01 10.91.01 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.64-4.96C18.68 6.59 15.65 4 12.01 4z"/></svg>
+                <span class="font-semibold mt-1 text-sm">5:00</span>
+                <span class="text-xs font-semibold text-gray-400">PM</span>
+              </div>
+              <div class="flex flex-col items-center">
+                <span class="font-semibold text-lg">27°C</span>
+                <svg class="h-10 w-10 fill-current text-gray-400 mt-3" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24" viewBox="0 0 24 24" width="24"><g><rect fill="none" height="24" width="24"/></g><g><g><path d="M19.78,17.51c-2.47,0-6.57-1.33-8.68-5.43C8.77,7.57,10.6,3.6,11.63,2.01C6.27,2.2,1.98,6.59,1.98,12 c0,0.14,0.02,0.28,0.02,0.42C2.61,12.16,3.28,12,3.98,12c0,0,0,0,0,0c0-3.09,1.73-5.77,4.3-7.1C7.78,7.09,7.74,9.94,9.32,13 c1.57,3.04,4.18,4.95,6.8,5.86c-1.23,0.74-2.65,1.15-4.13,1.15c-0.5,0-1-0.05-1.48-0.14c-0.37,0.7-0.94,1.27-1.64,1.64 c0.98,0.32,2.03,0.5,3.11,0.5c3.5,0,6.58-1.8,8.37-4.52C20.18,17.5,19.98,17.51,19.78,17.51z"/><path d="M7,16l-0.18,0C6.4,14.84,5.3,14,4,14c-1.66,0-3,1.34-3,3s1.34,3,3,3c0.62,0,2.49,0,3,0c1.1,0,2-0.9,2-2 C9,16.9,8.1,16,7,16z"/></g></g></svg>
+                <span class="font-semibold mt-1 text-sm">7:00</span>
+                <span class="text-xs font-semibold text-gray-400">PM</span>
+              </div>
+            </div>
+          </div>
+          <div class="flex flex-col space-y-6 w-full max-w-screen-sm bg-white p-10 mt-10 rounded-xl ring-8 ring-white ring-opacity-40">
+            <div class="flex justify-between items-center">
+              <span class="font-semibold text-lg w-1/4">Fri, 22 Jan</span>
+              <div class="flex items-center justify-end w-1/4 pr-10">
+                <span class="font-semibold">12%</span>
+                <svg class="w-6 h-6 fill-current ml-1" viewBox="0 0 16 20" version="1.1" xmlns="http://www.w3.org/2000/svg" >
+                  <g transform="matrix(1,0,0,1,-4,-2)">
+                    <path d="M17.66,8L12.71,3.06C12.32,2.67 11.69,2.67 11.3,3.06L6.34,8C4.78,9.56 4,11.64 4,13.64C4,15.64 4.78,17.75 6.34,19.31C7.9,20.87 9.95,21.66 12,21.66C14.05,21.66 16.1,20.87 17.66,19.31C19.22,17.75 20,15.64 20,13.64C20,11.64 19.22,9.56 17.66,8ZM6,14C6.01,12 6.62,10.73 7.76,9.6L12,5.27L16.24,9.65C17.38,10.77 17.99,12 18,14C18.016,17.296 14.96,19.809 12,19.74C9.069,19.672 5.982,17.655 6,14Z" style="fill-rule:nonzero;"/>
+                  </g>
+                </svg>
+              </div>
+              <svg class="h-8 w-8 fill-current w-1/4" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.79zM1 10.5h3v2H1zM11 .55h2V3.5h-2zm8.04 2.495l1.408 1.407-1.79 1.79-1.407-1.408zm-1.8 15.115l1.79 1.8 1.41-1.41-1.8-1.79zM20 10.5h3v2h-3zm-8-5c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm-1 4h2v2.95h-2zm-7.45-.96l1.41 1.41 1.79-1.8-1.41-1.41z"/></svg>
+              <span class="font-semibold text-lg w-1/4 text-right">18° / 32°</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="font-semibold text-lg w-1/4">Sat, 23 Jan</span>
+              <div class="flex items-center justify-end pr-10 w-1/4">
+                <span class="font-semibold">0%</span>
+                <svg class="w-6 h-6 fill-current ml-1" viewBox="0 0 16 20" version="1.1" xmlns="http://www.w3.org/2000/svg" >
+                  <g transform="matrix(1,0,0,1,-4,-2)">
+                    <path d="M17.66,8L12.71,3.06C12.32,2.67 11.69,2.67 11.3,3.06L6.34,8C4.78,9.56 4,11.64 4,13.64C4,15.64 4.78,17.75 6.34,19.31C7.9,20.87 9.95,21.66 12,21.66C14.05,21.66 16.1,20.87 17.66,19.31C19.22,17.75 20,15.64 20,13.64C20,11.64 19.22,9.56 17.66,8ZM6,14C6.01,12 6.62,10.73 7.76,9.6L12,5.27L16.24,9.65C17.38,10.77 17.99,12 18,14C18.016,17.296 14.96,19.809 12,19.74C9.069,19.672 5.982,17.655 6,14Z" style="fill-rule:nonzero;"/>
+                  </g>
+                </svg>
+              </div>
+              <svg class="h-8 w-8 fill-current w-1/4" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.79zM1 10.5h3v2H1zM11 .55h2V3.5h-2zm8.04 2.495l1.408 1.407-1.79 1.79-1.407-1.408zm-1.8 15.115l1.79 1.8 1.41-1.41-1.8-1.79zM20 10.5h3v2h-3zm-8-5c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm-1 4h2v2.95h-2zm-7.45-.96l1.41 1.41 1.79-1.8-1.41-1.41z"/></svg>
+              <span class="font-semibold text-lg w-1/4 text-right">22° / 34°</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="font-semibold text-lg w-1/4">Sun, 24 Jan</span>
+              <div class="flex items-center justify-end pr-10 w-1/4">
+                <span class="font-semibold">20%</span>
+                <svg class="w-6 h-6 fill-current ml-1" viewBox="0 0 16 20" version="1.1" xmlns="http://www.w3.org/2000/svg" >
+                  <g transform="matrix(1,0,0,1,-4,-2)">
+                    <path d="M17.66,8L12.71,3.06C12.32,2.67 11.69,2.67 11.3,3.06L6.34,8C4.78,9.56 4,11.64 4,13.64C4,15.64 4.78,17.75 6.34,19.31C7.9,20.87 9.95,21.66 12,21.66C14.05,21.66 16.1,20.87 17.66,19.31C19.22,17.75 20,15.64 20,13.64C20,11.64 19.22,9.56 17.66,8ZM6,14C6.01,12 6.62,10.73 7.76,9.6L12,5.27L16.24,9.65C17.38,10.77 17.99,12 18,14C18.016,17.296 14.96,19.809 12,19.74C9.069,19.672 5.982,17.655 6,14Z" style="fill-rule:nonzero;"/>
+                  </g>
+                </svg>
+              </div>
+              <svg class="h-8 w-8 fill-current w-1/4" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.79zM1 10.5h3v2H1zM11 .55h2V3.5h-2zm8.04 2.495l1.408 1.407-1.79 1.79-1.407-1.408zm-1.8 15.115l1.79 1.8 1.41-1.41-1.8-1.79zM20 10.5h3v2h-3zm-8-5c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm-1 4h2v2.95h-2zm-7.45-.96l1.41 1.41 1.79-1.8-1.41-1.41z"/></svg>
+              <span class="font-semibold text-lg w-1/4 text-right">21° / 32°</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="font-semibold text-lg w-1/4">Mon, 25 Jan</span>
+              <div class="flex items-center justify-end pr-10 w-1/4">
+                <span class="font-semibold">50%</span>
+                <svg class="w-6 h-6 fill-current ml-1" viewBox="0 0 16 20" version="1.1" xmlns="http://www.w3.org/2000/svg" >
+                  <g transform="matrix(1,0,0,1,-4,-2)">
+                    <path d="M17.66,8L12.71,3.06C12.32,2.67 11.69,2.67 11.3,3.06L6.34,8C4.78,9.56 4,11.64 4,13.64C4,15.64 4.78,17.75 6.34,19.31C7.9,20.87 9.95,21.66 12,21.66C14.05,21.66 16.1,20.87 17.66,19.31C19.22,17.75 20,15.64 20,13.64C20,11.64 19.22,9.56 17.66,8ZM6,14C6.01,12 6.62,10.73 7.76,9.6L12,5.27L16.24,9.65C17.38,10.77 17.99,12 18,14C18.016,17.296 14.96,19.809 12,19.74C9.069,19.672 5.982,17.655 6,14Z" style="fill-rule:nonzero;"/>
+                  </g>
+                </svg>
+              </div>
+              <svg class="h-8 w-8 fill-current w-1/4" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12.01 6c2.61 0 4.89 1.86 5.4 4.43l.3 1.5 1.52.11c1.56.11 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3h-13c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.95 6 12.01 6m0-2C9.12 4 6.6 5.64 5.35 8.04 2.35 8.36.01 10.91.01 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.64-4.96C18.68 6.59 15.65 4 12.01 4z"/></svg>
+              <span class="font-semibold text-lg w-1/4 text-right">18° / 29°</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="font-semibold text-lg w-1/4">Tue, 26 Jan</span>
+              <div class="flex items-center justify-center w-1/4">
+                <span class="font-semibold">80%</span>
+                <svg class="w-6 h-6 fill-current ml-1" viewBox="0 0 16 20" version="1.1" xmlns="http://www.w3.org/2000/svg" >
+                  <g transform="matrix(1,0,0,1,-4,-2)">
+                    <path d="M17.66,8L12.71,3.06C12.32,2.67 11.69,2.67 11.3,3.06L6.34,8C4.78,9.56 4,11.64 4,13.64C4,15.64 4.78,17.75 6.34,19.31C7.9,20.87 9.95,21.66 12,21.66C14.05,21.66 16.1,20.87 17.66,19.31C19.22,17.75 20,15.64 20,13.64C20,11.64 19.22,9.56 17.66,8ZM6,14C6.01,12 6.62,10.73 7.76,9.6L12,5.27L16.24,9.65C17.38,10.77 17.99,12 18,14C18.016,17.296 14.96,19.809 12,19.74C9.069,19.672 5.982,17.655 6,14Z" style="fill-rule:nonzero;"/>
+                  </g>
+                </svg>
+              </div>
+              <svg class="h-8 w-8 fill-current w-1/4" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12.01 6c2.61 0 4.89 1.86 5.4 4.43l.3 1.5 1.52.11c1.56.11 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3h-13c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.95 6 12.01 6m0-2C9.12 4 6.6 5.64 5.35 8.04 2.35 8.36.01 10.91.01 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.64-4.96C18.68 6.59 15.65 4 12.01 4z"/></svg>
+              <span class="font-semibold text-lg w-1/4 text-right">20° / 29°</span>
+            </div>
+            
+          </div>
+          <!-- Component End  -->
+        
+        </div> {% endcomment %}
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10 text-gray-700 rounded-2xl">
+          <!-- Current Weather -->
+          <div class="w-full max-w-screen-sm bg-white p-10 rounded-xl ring-8 ring-white ring-opacity-40">
+            <div class="flex justify-between">
+              <div class="flex flex-col">
+                <span class="text-6xl font-bold" id="current-temp">--°C</span>
+                {% comment %} <span class="font-semibold mt-1 text-gray-500" id="current-location">Mudjimba, QLD</span> {% endcomment %}
+              </div>
+              <img id="current-weather-icon" class="h-24 w-24" src="" alt="Weather Icon">
+            </div>
+            <div class="flex justify-between mt-12" id="current-weather-details">
+              <!-- Weather details will be populated here -->
+            </div>
+          </div>
+  
+          <!-- Day-wise Weather -->
+          <div class="grid grid-col space-y-6 w-full max-w-screen-sm bg-white p-10 rounded-xl ring-8 ring-white ring-opacity-40" id="day-wise-weather">
+            <!-- Day-wise weather details will be populated here -->
+          </div>
+        </div>
+      </div>
+    </div>
+  {% comment %} </div> {% endcomment %}
+</div>
+<!-- Data Cards Placeholder -->
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+<script>
+  const apiData = {{ api_data_json|safe }};
+  // Initialize map with blue theme
+  const mapCenter = [
+    apiData.geo_json.geometry.coordinates[0][0][1],
+    apiData.geo_json.geometry.coordinates[0][0][0]
+  ];
+  
+  const map = L.map('map').setView(mapCenter, 14);
+
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    attribution: '© Esri'
+  }).addTo(map);
+
+  const polygonCoordinates = apiData.geo_json.geometry.coordinates[0].map(coord => [coord[1], coord[0]]);
+  
+  const fieldPolygon = L.polygon(polygonCoordinates, {
+    color: '#3388ff',
+    fillColor: '#3388ff',
+    fillOpacity: 0.3,
+    weight: 2
+  }).addTo(map);
+
+  map.fitBounds(fieldPolygon.getBounds());
+</script>
+
+<!-- ApexCharts --> 
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+  // Use both API data and database-stored data
+  const ndviData = {{ ndvi_data_json|safe }};
+  const weatherData = {{ weather|safe }};
+  const vegIndexData = {{ veg_index_data|safe }};
+  const indexType = "{{ index_type }}";
+  
+  // Determine which data source to use based on availability
+  let chartDates = [];
+  let minValues = [];
+  let meanValues = [];
+  let maxValues = [];
+  
+  // If we have database-stored vegetation index data, use it
+  if (vegIndexData && vegIndexData.dates && vegIndexData.dates.length > 0) {
+    chartDates = vegIndexData.dates;
+    minValues = vegIndexData.min_values;
+    meanValues = vegIndexData.mean_values;
+    maxValues = vegIndexData.max_values;
+  } else {
+    // Fall back to API data if database data isn't available
+    chartDates = ndviData.map(entry => new Date(entry.dt * 1000).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: '2-digit',
+    }));
+    
+    minValues = ndviData.map(entry => entry.data.min);
+    meanValues = ndviData.map(entry => entry.data.mean);
+    maxValues = ndviData.map(entry => entry.data.max);
+  }
+
+  // Set up color scheme based on index type
+  let colorScheme = {
+    min: '#86efac',
+    mean: '#059669',
+    max: '#065f46'
+  };
+  
+  if (indexType === 'EVI') {
+    colorScheme = {
+      min: '#93c5fd',
+      mean: '#3b82f6',
+      max: '#1e40af'
+    };
+  } else if (indexType === 'SAVI') {
+    colorScheme = {
+      min: '#fcd34d',
+      mean: '#f59e0b',
+      max: '#b45309'
+    };
+  }
+
+  const options = {
+    chart: {
+      height: 350,
+      type: 'line',
+      toolbar: { show: false },
+      fontFamily: 'Inter, sans-serif',
+      animations: {
+        enabled: true,
+        easing: 'easeinout',
+        speed: 800
+      }
+    },
+    series: [
+      {
+        name: `Minimum ${indexType}`,
+        data: minValues,
+        color: colorScheme.min
+      },
+      {
+        name: `Mean ${indexType}`,
+        data: meanValues,
+        color: colorScheme.mean
+      },
+      {
+        name: `Maximum ${indexType}`,
+        data: maxValues,
+        color: colorScheme.max
+      }
+    ],
+    stroke: {
+      width: 3,
+      curve: 'smooth'
+    },
+    xaxis: {
+      categories: chartDates,
+      labels: { style: { colors: '#047857' } }
+    },
+    yaxis: {
+      min: minValues.length > 0 ? Math.floor(Math.min(...minValues) * 10) / 10 : 0,
+      max: maxValues.length > 0 ? Math.ceil(Math.max(...maxValues) * 10) / 10 : 1,
+      labels: { 
+        style: { colors: '#047857' },
+        formatter: function (value) {
+          return value.toFixed(2); // Format y-axis labels to 2 decimal points
+        } 
+      }
+    },
+    grid: {
+      borderColor: '#d1fae5'
+    },
+    markers: {
+      size: 5
+    },
+    tooltip: {
+      theme: 'light',
+      y: {
+        formatter: (value) => value.toFixed(3)
+      },
+      x: {
+        show: true,
+        formatter: (value) => `Date: ${value}`
+      }
+    },
+    legend: {
+      position: 'top',
+      horizontalAlign: 'right'
+    }
+  };
+
+  const chart = new ApexCharts(document.querySelector('#line-chart'), options);
+  chart.render();
+  const groupedWeather = {};
+  
+  // Group weather data by day
+  weatherData.forEach(entry => {
+    const date = new Date(entry.dt * 1000).toLocaleDateString('en-US', { weekday: 'short', day: '2-digit', month: 'short' });
+    if (!groupedWeather[date]) {
+      groupedWeather[date] = [];
+    }
+    groupedWeather[date].push(entry);
+  });
+
+  // Function to update current weather section
+  function updateCurrentWeather(weatherEntries) {
+    const currentWeatherDetails = document.getElementById('current-weather-details');
+    const currentWeather = weatherEntries[0];
+    const currentTemp = (currentWeather.main.temp - 273.15).toFixed(1); // Convert Kelvin to Celsius
+    const currentWeatherIcon = currentWeather.weather[0].icon;
+    const currentWeatherDescription = currentWeather.weather[0].description;
+
+    document.getElementById('current-temp').textContent = `${currentTemp}°C`;
+    document.getElementById('current-weather-icon').src = `http://openweathermap.org/img/wn/${currentWeatherIcon}@2x.png`;
+    currentWeatherDetails.innerHTML = '';
+    
+    weatherEntries.forEach(entry => {
+      const temp = (entry.main.temp - 273.15).toFixed(1); // Convert Kelvin to Celsius
+      const weatherIcon = entry.weather[0].icon;
+      const time = new Date(entry.dt * 1000).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+      const weatherElement = document.createElement('div');
+      weatherElement.className = 'flex flex-col items-center m-1';
+      weatherElement.innerHTML = `
+        <span class="font-semibold text-lg text-center">${temp}°C</span>
+        <img class="h-10 w-10 mt-2" src="http://openweathermap.org/img/wn/${weatherIcon}@2x.png" alt="${entry.weather[0].description}">
+        <span class="font-semibold mt-1 text-sm text-center">${time}</span>
+        <span class="text-xs font-semibold text-gray-400 text-center">${entry.weather[0].description}</span>
+      `;
+      currentWeatherDetails.appendChild(weatherElement);
+    });
+  }
+
+  // Populate Day-wise Weather
+  const dayWiseWeather = document.getElementById('day-wise-weather');
+  Object.keys(groupedWeather).forEach(date => {
+    const dayWeather = groupedWeather[date];
+    const dayTemp = (dayWeather[0].main.temp - 273.15).toFixed(1);
+    const dayWeatherIcon = dayWeather[0].weather[0].icon;
+
+    const dayElement = document.createElement('div');
+    dayElement.className = 'flex justify-between items-center cursor-pointer';
+    dayElement.innerHTML = `
+      <span class="font-semibold text-lg w-1/4">${date}</span>
+      <div class="flex items-center justify-end pr-10 w-1/4">
+        <span class="font-semibold">${dayWeather[0].main.humidity}%</span>
+        <svg class="w-6 h-6 fill-current ml-1" viewBox="0 0 16 20" version="1.1" xmlns="http://www.w3.org/2000/svg" >
+                  <g transform="matrix(1,0,0,1,-4,-2)">
+                    <path d="M17.66,8L12.71,3.06C12.32,2.67 11.69,2.67 11.3,3.06L6.34,8C4.78,9.56 4,11.64 4,13.64C4,15.64 4.78,17.75 6.34,19.31C7.9,20.87 9.95,21.66 12,21.66C14.05,21.66 16.1,20.87 17.66,19.31C19.22,17.75 20,15.64 20,13.64C20,11.64 19.22,9.56 17.66,8ZM6,14C6.01,12 6.62,10.73 7.76,9.6L12,5.27L16.24,9.65C17.38,10.77 17.99,12 18,14C18.016,17.296 14.96,19.809 12,19.74C9.069,19.672 5.982,17.655 6,14Z" style="fill-rule:nonzero;"/>
+                  </g>
+                </svg>
+      </div>
+      <img class="h-8 w-8 fill-current w-1/4" src="http://openweathermap.org/img/wn/${dayWeatherIcon}@2x.png" alt="${dayWeather[0].weather[0].description}">
+      
+      <span class="font-semibold  text-lg w-1/4 text-right">${dayTemp}°C</span>
+    `;
+
+    // Add click event to update current weather section
+    dayElement.addEventListener('click', () => {
+      updateCurrentWeather(dayWeather);
+    });
+
+    dayWiseWeather.appendChild(dayElement);
+  });
+
+  // Set default current weather to today's data
+  const today = new Date().toLocaleDateString('en-US', { weekday: 'short', day: '2-digit', month: 'short' });
+  if (groupedWeather[today]) {
+    updateCurrentWeather(groupedWeather[today]);
+  }
+</script>
+
+{% endblock %}
+

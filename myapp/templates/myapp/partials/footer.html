@@ -1,0 +1,226 @@
+<!-- Simplified Modern Agriculture-themed Footer -->
+<footer class="bg-emerald-800 text-white py-6 transition-all duration-300 dark-theme:bg-dark-bg dark-theme:border-t dark-theme:border-emerald-800">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Main Footer Content -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Brand Section -->
+            <div class="col-span-1">
+                <div class="flex items-center mb-3">
+                    <span class="text-xl font-bold brand-text">AgroBrain</span>
+                </div>
+                <p class="text-emerald-200 text-sm mb-3">
+                    Empowering farmers with intelligent solutions for sustainable agriculture.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-emerald-200 hover:text-white transition-colors">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="text-emerald-200 hover:text-white transition-colors">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723 10.054 10.054 0 01-3.127 1.184 4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Quick Links -->
+            <div class="col-span-1">
+                <h3 class="text-lg font-semibold mb-3">Quick Links</h3>
+                <div class="grid grid-cols-2 gap-2">
+                    <a href="{% url 'dashboard' %}" class="text-emerald-200 hover:text-white transition-all duration-300">Dashboard</a>
+                    <a href="{% url 'news' %}" class="text-emerald-200 hover:text-white transition-all duration-300">News</a>
+                    <a href="{% url 'weather' %}" class="text-emerald-200 hover:text-white transition-all duration-300">Weather</a>
+                    <a href="{% url 'detect' %}" class="text-emerald-200 hover:text-white transition-all duration-300">Disease Detection</a>
+                    <a href="{% url 'market' %}" class="text-emerald-200 hover:text-white transition-all duration-300">Market</a>
+                    <a href="{% url 'resources' %}" class="text-emerald-200 hover:text-white transition-all duration-300">Resources</a>
+                </div>
+            </div>
+            
+            <!-- Contact -->
+            <div class="col-span-1">
+                <h3 class="text-lg font-semibold mb-3">Contact Us</h3>
+                <p class="text-emerald-200 text-sm mb-1">support@agrobrain.com</p>
+                <p class="text-emerald-200 text-sm">+1 (555) 123-4567</p>
+            </div>
+        </div>
+        
+        <!-- Bottom Footer -->
+        <div class="border-t border-emerald-700 mt-4 pt-4 flex flex-col md:flex-row justify-between items-center">
+            <div class="text-emerald-300 text-sm mb-2 md:mb-0">
+                &copy; {% now "Y" %} AgroBrain. All rights reserved.
+            </div>
+            <div class="flex space-x-4">
+                <a href="{% url 'privacy' %}" class="text-emerald-300 hover:text-white text-sm transition-colors">Privacy</a>
+                <a href="{% url 'TandC' %}" class="text-emerald-300 hover:text-white text-sm transition-colors">Terms</a>
+                <a href="{% url 'FAQs' %}" class="text-emerald-300 hover:text-white text-sm transition-colors">FAQs</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<style>
+    /* Footer link hover effect */
+    footer a {
+        position: relative;
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+    }
+    
+    footer a::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 1px;
+        bottom: -2px;
+        left: 0;
+        background-color: white;
+        transition: width 0.3s ease;
+    }
+    
+    footer a:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    footer a:hover::after {
+        width: 100%;
+    }
+    
+    .dark-theme footer a:hover {
+        background-color: rgba(16, 185, 129, 0.2);
+    }
+    
+    .footer-nav-link {
+        margin: 2px 0;
+        transition: transform 0.2s ease;
+    }
+    
+    .footer-nav-link:hover {
+        transform: translateX(4px);
+    }
+    
+    /* Enhanced Plant Growth Animation */
+    .plant-growth-large {
+        position: relative;
+        width: 32px;
+        height: 32px;
+    }
+    
+    .plant-growth-large .plant-stem {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 3px;
+        height: 16px;
+        background-color: var(--accent-color, #10b981);
+        transform: translateX(-50%);
+        animation: grow-stem-footer 3s ease-out infinite alternate;
+        transform-origin: bottom center;
+    }
+    
+    .plant-growth-large .plant-leaf {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background-color: var(--accent-color, #10b981);
+        border-radius: 50% 0;
+        opacity: 0;
+        animation: grow-leaf-footer 3s ease-out infinite alternate;
+    }
+    
+    .plant-growth-large .plant-leaf:nth-child(2) {
+        top: 12px;
+        left: 8px;
+        transform: rotate(-45deg) scale(0);
+        animation-delay: 0.5s;
+    }
+    
+    .plant-growth-large .plant-leaf:nth-child(3) {
+        top: 6px;
+        left: 14px;
+        transform: rotate(0deg) scale(0);
+        animation-delay: 1s;
+    }
+    
+    .plant-growth-large .plant-leaf:nth-child(4) {
+        top: 12px;
+        right: 8px;
+        transform: rotate(45deg) scale(0);
+        animation-delay: 1.5s;
+    }
+    
+    .plant-growth-large .plant-flower {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 12px;
+        height: 12px;
+        background-color: #f59e0b;
+        border-radius: 50%;
+        transform: translateX(-50%) scale(0);
+        opacity: 0;
+        animation: grow-flower 3s ease-out 2s infinite alternate;
+    }
+    
+    @keyframes grow-stem-footer {
+        0% {
+            height: 8px;
+        }
+        100% {
+            height: 16px;
+        }
+    }
+    
+    @keyframes grow-leaf-footer {
+        0% {
+            opacity: 0;
+            transform: rotate(var(--rotation, 0deg)) scale(0);
+        }
+        30% {
+            opacity: 1;
+            transform: rotate(var(--rotation, 0deg)) scale(1);
+        }
+        100% {
+            opacity: 1;
+            transform: rotate(var(--rotation, 0deg)) scale(1.1);
+        }
+    }
+    
+    @keyframes grow-flower {
+        0% {
+            opacity: 0;
+            transform: translateX(-50%) scale(0);
+        }
+        50% {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+        100% {
+            opacity: 1;
+            transform: translateX(-50%) scale(1.1);
+        }
+    }
+    
+    .brand-text {
+        background: linear-gradient(90deg, #10b981, #f59e0b);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: shimmer 3s infinite;
+        background-size: 200% 100%;
+    }
+    
+    @keyframes shimmer {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+</style>

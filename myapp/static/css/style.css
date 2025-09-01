@@ -1,0 +1,140 @@
+:root {
+    /* Light theme (default) */
+    --primary-color: #199c2d;
+    --secondary-color: #f0f7f1;
+    --text-color: #333;
+    --link-color: #1a5c24;
+    --bg-color: #ffffff;
+    --card-bg: #ffffff;
+    --card-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    --border-color: #e0e0e0;
+    --nav-active: #10b981;
+    --nav-hover: rgba(16, 185, 129, 0.1);
+    --nav-text: #4b5563;
+    --nav-active-text: #10b981;
+}
+
+.dark-theme {
+    /* Dark theme */
+    --primary-color: #10b981;
+    --secondary-color: #1f2937;
+    --text-color: #e5e7eb;
+    --link-color: #34d399;
+    --bg-color: #111827;
+    --card-bg: #1f2937;
+    --card-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    --border-color: #374151;
+    --nav-active: #10b981;
+    --nav-hover: rgba(16, 185, 129, 0.2);
+    --nav-text: #d1d5db;
+    --nav-active-text: #10b981;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    margin: 0;
+    padding: 0;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.container {
+    
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+
+    color: white;
+    text-align: center;
+    padding: 1rem 0;
+}
+#heading{
+    background-image: url('https://ik.imagekit.io/nwagyp5qv/multiple%20plants%20in%20a%20rectangular%20shape%20with%20a%20black%20background.png?updatedAt=1737903847416');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    
+}
+h1 {
+    margin: 0;
+}
+
+main {
+    background-color: var(--secondary-color);
+    padding: 2rem 0;
+    transition: background-color 0.3s ease;
+}
+
+section {
+    background-color: var(--card-bg);
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    border-radius: 5px;
+    box-shadow: var(--card-shadow);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+h2 {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 0.5rem;
+}
+
+ul {
+    padding-left: 1.5rem;
+}
+
+a {
+    color: var(--link-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+
+
+
+/* Theme transition helper classes */
+.theme-transition * {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+.theme-transitioned {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease !important;
+}
+
+/* Navigation consistency */
+.nav-link {
+    color: var(--nav-text);
+    transition: all 0.3s ease;
+    border-radius: 0.375rem;
+    padding: 0.5rem 0.75rem;
+}
+
+.nav-link:hover {
+    color: var(--nav-active-text);
+    background-color: var(--nav-hover);
+}
+
+.nav-link.active-nav {
+    color: var(--nav-active-text);
+    background-color: var(--nav-hover);
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 10px;
+    }
+
+    section {
+        padding: 1rem;
+    }
+}

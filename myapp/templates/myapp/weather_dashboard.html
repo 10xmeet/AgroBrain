@@ -1,0 +1,272 @@
+{% extends 'myapp/base.html' %}
+{% block title %}Weather Dashboard{% endblock %}
+
+{% block content %}
+<div class="bg-emerald-50 min-h-screen px-4 sm:px-6 lg:px-8 py-8 transition-all duration-300 dark-theme:bg-dark-bg">
+  <div class="max-w-6xl mx-auto">
+    <!-- Weather Dashboard Header -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-emerald-800 dark-theme:text-emerald-400">Weather Dashboard</h1>
+      <p class="text-emerald-600 dark-theme:text-emerald-300">Real-time weather data and forecasts for your farm</p>
+    </div>
+
+    <!-- Current Weather Card -->
+    <div class="bg-white dark-theme:bg-dark-card rounded-xl p-6 shadow-sm border border-emerald-100 dark-theme:border-dark-border hover:shadow-md transition-shadow mb-8">
+      <div class="flex flex-col md:flex-row items-center justify-between">
+        <div class="flex items-center gap-4 mb-4 md:mb-0">
+          <div class="p-3 bg-emerald-100 dark-theme:bg-emerald-900 rounded-lg">
+            <img id="current-weather-icon" class="h-16 w-16" src="" alt="Weather Icon">
+          </div>
+          <div>
+            <h2 class="text-2xl font-bold text-emerald-800 dark-theme:text-emerald-400" id="location-name">Loading location...</h2>
+            <p class="text-emerald-600 dark-theme:text-emerald-300" id="current-date">Loading date...</p>
+          </div>
+        </div>
+        <div class="text-center md:text-right">
+          <div class="text-5xl font-bold text-emerald-600 dark-theme:text-emerald-300" id="current-temp">--°C</div>
+          <div class="text-xl text-gray-600 dark-theme:text-gray-400" id="current-desc">Loading weather...</div>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+        <div class="bg-emerald-50 dark-theme:bg-dark-bg p-4 rounded-lg text-center">
+          <p class="text-emerald-600 dark-theme:text-emerald-300">Humidity</p>
+          <p class="text-2xl font-bold text-emerald-800 dark-theme:text-emerald-400" id="current-humidity">--%</p>
+        </div>
+        <div class="bg-emerald-50 dark-theme:bg-dark-bg p-4 rounded-lg text-center">
+          <p class="text-emerald-600 dark-theme:text-emerald-300">Wind Speed</p>
+          <p class="text-2xl font-bold text-emerald-800 dark-theme:text-emerald-400" id="current-wind">-- km/h</p>
+        </div>
+        <div class="bg-emerald-50 dark-theme:bg-dark-bg p-4 rounded-lg text-center">
+          <p class="text-emerald-600 dark-theme:text-emerald-300">Pressure</p>
+          <p class="text-2xl font-bold text-emerald-800 dark-theme:text-emerald-400" id="current-pressure">-- hPa</p>
+        </div>
+        <div class="bg-emerald-50 dark-theme:bg-dark-bg p-4 rounded-lg text-center">
+          <p class="text-emerald-600 dark-theme:text-emerald-300">Visibility</p>
+          <p class="text-2xl font-bold text-emerald-800 dark-theme:text-emerald-400" id="current-visibility">-- km</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Forecast Section -->
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold text-emerald-800 dark-theme:text-emerald-400 mb-4">5-Day Forecast</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4" id="forecast-container">
+        <!-- Forecast cards will be populated here by JavaScript -->
+        <div class="bg-white dark-theme:bg-dark-card rounded-xl p-4 shadow-sm border border-emerald-100 dark-theme:border-dark-border hover:shadow-md transition-shadow text-center skeleton-loader">
+          <div class="h-6 w-20 mx-auto bg-gray-200 dark-theme:bg-gray-700 rounded mb-2"></div>
+          <div class="h-16 w-16 mx-auto bg-gray-200 dark-theme:bg-gray-700 rounded-full mb-2"></div>
+          <div class="h-8 w-16 mx-auto bg-gray-200 dark-theme:bg-gray-700 rounded mb-2"></div>
+          <div class="h-4 w-24 mx-auto bg-gray-200 dark-theme:bg-gray-700 rounded"></div>
+        </div>
+        <!-- Repeat skeleton loaders for visual effect -->
+        <div class="bg-white dark-theme:bg-dark-card rounded-xl p-4 shadow-sm border border-emerald-100 dark-theme:border-dark-border hover:shadow-md transition-shadow text-center skeleton-loader">
+          <div class="h-6 w-20 mx-auto bg-gray-200 dark-theme:bg-gray-700 rounded mb-2"></div>
+          <div class="h-16 w-16 mx-auto bg-gray-200 dark-theme:bg-gray-700 rounded-full mb-2"></div>
+          <div class="h-8 w-16 mx-auto bg-gray-200 dark-theme:bg-gray-700 rounded mb-2"></div>
+          <div class="h-4 w-24 mx-auto bg-gray-200 dark-theme:bg-gray-700 rounded"></div>
+        </div>
+        <div class="bg-white dark-theme:bg-dark-card rounded-xl p-4 shadow-sm border border-emerald-100 dark-theme:border-dark-border hover:shadow-md transition-shadow text-center skeleton-loader">
+          <div class="h-6 w-20 mx-auto bg-gray-200 dark-theme:bg-gray-700 rounded mb-2"></div>
+          <div class="h-16 w-16 mx-auto bg-gray-200 dark-theme:bg-gray-700 rounded-full mb-2"></div>
+          <div class="h-8 w-16 mx-auto bg-gray-200 dark-theme:bg-gray-700 rounded mb-2"></div>
+          <div class="h-4 w-24 mx-auto bg-gray-200 dark-theme:bg-gray-700 rounded"></div>
+        </div>
+        <div class="bg-white dark-theme:bg-dark-card rounded-xl p-4 shadow-sm border border-emerald-100 dark-theme:border-dark-border hover:shadow-md transition-shadow text-center skeleton-loader">
+          <div class="h-6 w-20 mx-auto bg-gray-200 dark-theme:bg-gray-700 rounded mb-2"></div>
+          <div class="h-16 w-16 mx-auto bg-gray-200 dark-theme:bg-gray-700 rounded-full mb-2"></div>
+          <div class="h-8 w-16 mx-auto bg-gray-200 dark-theme:bg-gray-700 rounded mb-2"></div>
+          <div class="h-4 w-24 mx-auto bg-gray-200 dark-theme:bg-gray-700 rounded"></div>
+        </div>
+        <div class="bg-white dark-theme:bg-dark-card rounded-xl p-4 shadow-sm border border-emerald-100 dark-theme:border-dark-border hover:shadow-md transition-shadow text-center skeleton-loader">
+          <div class="h-6 w-20 mx-auto bg-gray-200 dark-theme:bg-gray-700 rounded mb-2"></div>
+          <div class="h-16 w-16 mx-auto bg-gray-200 dark-theme:bg-gray-700 rounded-full mb-2"></div>
+          <div class="h-8 w-16 mx-auto bg-gray-200 dark-theme:bg-gray-700 rounded mb-2"></div>
+          <div class="h-4 w-24 mx-auto bg-gray-200 dark-theme:bg-gray-700 rounded"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Weather Insights -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Agricultural Impact -->
+      <div class="bg-white dark-theme:bg-dark-card rounded-xl p-6 shadow-sm border border-emerald-100 dark-theme:border-dark-border hover:shadow-md transition-shadow">
+        <h3 class="text-xl font-bold text-emerald-800 dark-theme:text-emerald-400 mb-4">Agricultural Impact</h3>
+        <div id="agri-impact" class="space-y-4">
+          <p class="text-emerald-600 dark-theme:text-emerald-300">Loading agricultural insights...</p>
+        </div>
+      </div>
+
+      <!-- Weather Alerts -->
+      <div class="bg-white dark-theme:bg-dark-card rounded-xl p-6 shadow-sm border border-emerald-100 dark-theme:border-dark-border hover:shadow-md transition-shadow">
+        <h3 class="text-xl font-bold text-emerald-800 dark-theme:text-emerald-400 mb-4">Weather Alerts</h3>
+        <div id="weather-alerts" class="space-y-4">
+          <p class="text-emerald-600 dark-theme:text-emerald-300">No active weather alerts at this time.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Set current date
+    const now = new Date();
+    document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+
+    // Process weather data if available
+    {% if data %}
+      const weatherData = {{ data|safe }};
+      
+      // Set location name
+      document.getElementById('location-name').textContent = 'Your Farm';
+      
+      // Process current weather
+      if (weatherData && weatherData.length > 0) {
+        const currentWeather = weatherData[0];
+        const currentTemp = (currentWeather.main.temp - 273.15).toFixed(1); // Convert Kelvin to Celsius
+        const currentWeatherIcon = currentWeather.weather[0].icon;
+        const currentWeatherDescription = currentWeather.weather[0].description;
+        const currentWind = currentWeather.wind.speed;
+        const currentHumidity = currentWeather.main.humidity;
+        const currentPressure = currentWeather.main.pressure;
+        const currentVisibility = (currentWeather.visibility / 1000).toFixed(1); // Convert meters to km
+        
+        document.getElementById('current-temp').textContent = `${currentTemp}°C`;
+        document.getElementById('current-desc').textContent = `${currentWeatherDescription}`;
+        document.getElementById('current-wind').textContent = `${currentWind} km/h`;
+        document.getElementById('current-humidity').textContent = `${currentHumidity}%`;
+        document.getElementById('current-pressure').textContent = `${currentPressure} hPa`;
+        document.getElementById('current-visibility').textContent = `${currentVisibility} km`;
+        document.getElementById('current-weather-icon').src = `http://openweathermap.org/img/wn/${currentWeatherIcon}@2x.png`;
+        
+        // Remove skeleton loaders
+        document.querySelectorAll('.skeleton-loader').forEach(loader => {
+          loader.remove();
+        });
+        
+        // Process forecast data
+        const forecastContainer = document.getElementById('forecast-container');
+        
+        // Group weather data by day (using date at noon)
+        const groupedForecast = {};
+        weatherData.forEach(entry => {
+          const date = new Date(entry.dt * 1000);
+          const dateKey = date.toISOString().split('T')[0]; // YYYY-MM-DD format
+          
+          // Skip today's forecast
+          if (date.getDate() === now.getDate() && date.getMonth() === now.getMonth()) {
+            return;
+          }
+          
+          // Initialize group if it doesn't exist
+          if (!groupedForecast[dateKey]) {
+            groupedForecast[dateKey] = [];
+          }
+          
+          groupedForecast[dateKey].push(entry);
+        });
+        
+        // Create forecast cards (limit to 5 days)
+        Object.keys(groupedForecast).slice(0, 5).forEach(dateKey => {
+          const dayForecasts = groupedForecast[dateKey];
+          
+          // Find forecast closest to noon for the day's "representative" weather
+          let noonForecast = dayForecasts[0];
+          let minDiffFromNoon = Infinity;
+          
+          dayForecasts.forEach(forecast => {
+            const forecastDate = new Date(forecast.dt * 1000);
+            const diffFromNoon = Math.abs(12 - forecastDate.getHours());
+            
+            if (diffFromNoon < minDiffFromNoon) {
+              minDiffFromNoon = diffFromNoon;
+              noonForecast = forecast;
+            }
+          });
+          
+          // Calculate min and max temperatures for the day
+          let minTemp = Infinity;
+          let maxTemp = -Infinity;
+          
+          dayForecasts.forEach(forecast => {
+            const temp = forecast.main.temp - 273.15; // Convert Kelvin to Celsius
+            minTemp = Math.min(minTemp, temp);
+            maxTemp = Math.max(maxTemp, temp);
+          });
+          
+          // Create forecast card
+          const forecastDate = new Date(dateKey);
+          const dayName = forecastDate.toLocaleDateString('en-US', { weekday: 'short' });
+          const monthDay = forecastDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+          
+          const forecastCard = document.createElement('div');
+          forecastCard.className = 'bg-white dark-theme:bg-dark-card rounded-xl p-4 shadow-sm border border-emerald-100 dark-theme:border-dark-border hover:shadow-md transition-shadow text-center';
+          forecastCard.innerHTML = `
+            <h4 class="font-semibold text-emerald-800 dark-theme:text-emerald-400">${dayName}, ${monthDay}</h4>
+            <img class="h-16 w-16 mx-auto my-2" src="http://openweathermap.org/img/wn/${noonForecast.weather[0].icon}@2x.png" alt="${noonForecast.weather[0].description}">
+            <p class="text-xl font-bold text-emerald-600 dark-theme:text-emerald-300">${maxTemp.toFixed(1)}°C</p>
+            <p class="text-sm text-gray-500 dark-theme:text-gray-400">${minTemp.toFixed(1)}°C</p>
+            <p class="text-xs text-emerald-600 dark-theme:text-emerald-300 mt-2">${noonForecast.weather[0].description}</p>
+          `;
+          
+          forecastContainer.appendChild(forecastCard);
+        });
+        
+        // Generate agricultural impact insights based on weather
+        const agriImpact = document.getElementById('agri-impact');
+        agriImpact.innerHTML = '';
+        
+        // Temperature impact
+        let tempImpact = '';
+        if (currentTemp < 5) {
+          tempImpact = 'Cold temperatures may affect sensitive crops. Consider protective measures.';
+        } else if (currentTemp > 30) {
+          tempImpact = 'High temperatures may cause heat stress in crops. Ensure adequate irrigation.';
+        } else {
+          tempImpact = 'Current temperatures are favorable for most crop growth.';
+        }
+        
+        // Humidity impact
+        let humidityImpact = '';
+        if (currentHumidity > 80) {
+          humidityImpact = 'High humidity increases risk of fungal diseases. Monitor crops closely.';
+        } else if (currentHumidity < 30) {
+          humidityImpact = 'Low humidity may increase water requirements. Adjust irrigation accordingly.';
+        } else {
+          humidityImpact = 'Current humidity levels are generally favorable for crop growth.';
+        }
+        
+        // Wind impact
+        let windImpact = '';
+        if (currentWind > 20) {
+          windImpact = 'Strong winds may damage tall crops or structures. Secure vulnerable plants.';
+        } else {
+          windImpact = 'Current wind conditions pose minimal risk to crops.';
+        }
+        
+        // Add insights to the page
+        const insights = [tempImpact, humidityImpact, windImpact];
+        insights.forEach(insight => {
+          const p = document.createElement('p');
+          p.className = 'text-emerald-600 dark-theme:text-emerald-300';
+          p.textContent = insight;
+          agriImpact.appendChild(p);
+        });
+      }
+    {% else %}
+      // Display message if no data is available
+      document.getElementById('location-name').textContent = 'No Farm Selected';
+      document.getElementById('current-desc').textContent = 'No weather data available';
+      
+      // Add a message to agricultural impact
+      const agriImpact = document.getElementById('agri-impact');
+      agriImpact.innerHTML = '<p class="text-emerald-600 dark-theme:text-emerald-300">Please select a farm to view agricultural insights.</p>';
+    {% endif %}
+  });
+</script>
+{% endblock %}

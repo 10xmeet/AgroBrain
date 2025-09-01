@@ -1,0 +1,25 @@
+<!-- templates/components/loading.html -->
+<div id="loading" class="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-75 transition-opacity">
+    <div class="text-center">
+        <!-- Replace this with your preferred loading GIF -->
+        <img src ="{% static 'https://loading.io/icon/i6011i' %}" 
+             alt="Loading..." 
+             class="w-16 h-16 animate-spin"
+             style="animation-duration: 1.5s;">
+        <p class="mt-2 text-gray-600">Loading...</p>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var loadingElement = document.getElementById('loading');
+    
+    // Show loading spinner when page starts loading
+    loadingElement.style.display = 'flex';
+
+    // Hide loading spinner when page is fully loaded
+    window.addEventListener('load', function() {
+        loadingElement.style.display = 'none';
+    });
+});
+</script>

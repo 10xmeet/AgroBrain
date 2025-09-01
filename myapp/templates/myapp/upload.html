@@ -1,0 +1,27 @@
+{% extends 'myapp/base.html' %}
+
+{% block title %}Plant Disease Detection{% endblock %}
+
+{% block content %}
+<div class="container text-center mt-5">
+    <h2>🌿 Upload a Plant Image for Analysis</h2>
+    <p>Our AI will analyze the plant and detect any diseases.</p>
+
+    <form action="" method="post" enctype="multipart/form-data" id="upload-form">
+        {% csrf_token %}
+        <input type="file" name="plant_image" id="plant_image" required>
+        <button type="submit" id="analyze-btn">🔍 Analyze</button>
+    </form>
+
+    <div id="loading" style="display: none;">
+        <p>⏳ Analyzing... Please wait.</p>
+    </div>
+</div>
+
+<script>
+    document.getElementById("upload-form").addEventListener("submit", function() {
+        document.getElementById("loading").style.display = "block";
+        document.getElementById("analyze-btn").style.display = "none";
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'myapp/base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="bg-emerald-50 min-h-screen flex items-center justify-center p-4" style="background-image: url('https://media-hosting.imagekit.io//ee412e477c394a56/%E2%80%94Pngtree%E2%80%94scribble%20textured%20vector%20illustration%20of_15230397.jpg?Expires=1832502189&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=ulq6ESiay40hJ9VLbLYl8BhPN6d6OyEn6x840WlBKxsDzShrKBgxiCWVaabJpRy6FpdQ5wRdLPnilfzRjw8OgcTWMfDazDQhU8926q5NQN22fdkD3EpUkodtrJe0O204yIynZ0pZm11Pqd2uDJ-bpCvJcnxp3gZZ8uhO8mFvqxUGAS1tnva-0oMkkskoxHYgugBT0aLltBMZibuA7G8pO9c9FpbLnNNTKpOcdjkiB8uGK4PJClRxRqJvbSbSWEyxYhLRMTRgVnJ1YprnYtYGbFU~Fak55GKVZoscuLxoPtAHOHyMB2tzY1oFMw4Jspd-ouofG4eUaxo8LWBovH3nJQ__'); background-size: cover; background-repeat: no-repeat; background-position: center center;">
+    <div class="w-full max-w-md space-y-8 bg-white/90 p-8 rounded-2xl shadow-lg backdrop-blur-sm">
+        <h3 class="text-emerald-700 text-4xl font-semibold text-center">Welcome Back</h3>
+
+        {% if form.errors %}
+        <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">
+            <p class="text-sm">Invalid username or password. Please try again.</p>
+        </div>
+        {% endif %}
+
+        <form class="space-y-6" method="POST">
+            {% csrf_token %}
+            
+            <div>
+                <label for="username" class="block text-sm font-medium text-emerald-700 mb-2">Username</label>
+                <input type="text" id="username" name="username" required 
+                    class="w-full px-3 py-2 bg-emerald-50 rounded-lg text-emerald-800 focus:ring-2 focus:ring-emerald-500 focus:outline-none border border-emerald-300 {% if form.errors %}border-red-500{% endif %}"
+                    value="{{ form.username.value|default:'' }}">
+            </div>
+
+            <div>
+                <label for="password" class="block text-sm font-medium text-emerald-700 mb-2">Password</label>
+                <div class="relative">
+                    <input type="password" id="password" name="password" required 
+                        class="w-full px-3 py-2 bg-emerald-50 rounded-lg text-emerald-800 focus:ring-2 focus:ring-emerald-500 focus:outline-none border border-emerald-300 {% if form.errors %}border-red-500{% endif %}">
+                    <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center" onclick="togglePasswordVisibility('password', 'eyeIcon')">
+                        <svg class="h-5 w-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" id="eyeIcon">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <button type="submit" class="w-full bg-emerald-600 text-white rounded-lg py-3 hover:bg-emerald-700 transition-colors">
+                Sign In
+            </button>
+        </form>
+
+        <div class="text-sm text-emerald-700 text-center">
+            <p class="mt-4">
+                New to our Platform?
+                <a href="{% url 'register' %}" class="text-emerald-600 hover:underline">Create an account</a>
+            </p>
+        </div>
+    </div>
+</div>
+<script>
+    function togglePasswordVisibility(inputId, eyeIconId) {
+        const passwordInput = document.getElementById(inputId);
+        const eyeIcon = document.getElementById(eyeIconId);
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />`;
+        } else {
+            passwordInput.type = 'password';
+            eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />`;
+        }
+    }
+</script>
+{% endblock %}

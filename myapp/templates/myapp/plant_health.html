@@ -1,0 +1,77 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>🌿 Plant Health Analysis 🌱</h2>
+
+    {% if report %}
+        <div class="report">
+            <p><strong>Plant Type:</strong> {{ report.PlantType }}</p>
+            <p><strong>Disease Detected:</strong> {{ report.DiseaseDetected }}</p>
+            <p><strong>Confidence Level:</strong> {{ report.ConfidenceLevel }}</p>
+            <p><strong>Health Status:</strong> {{ report.PlantHealth }}</p>
+            <p><strong>Precautions:</strong> {{ report.Precautions }}</p>
+            <p><strong>Solution:</strong> {{ report.Solution }}</p>
+
+            <!-- Health Bar -->
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" 
+                     style="width: {% if report.PlantHealth == 'Healthy' %}100{% else %}50{% endif %}%;"
+                     aria-valuenow="{{ report.PlantHealth_Bar }}" 
+                     aria-valuemin="0" aria-valuemax="100">
+                    {% if report.PlantHealth == "Healthy" %}100{% else %}50{% endif %}%
+                </div>
+            </div>
+
+            <!-- Download Report as PDF -->
+            <form action="{% url 'download_pdf' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">Download Report 📄</button>
+            </form>
+        </div>
+    {% else %}
+        <p>No analysis yet. Upload an image to get started! 📸</p>
+    {% endif %}
+
+    <!-- Upload Form -->
+    <form action="{% url 'plant_disease_detection' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="plant_image" required>
+        <button type="submit" class="btn btn-success">Analyze</button>
+    </form>
+
+    <h3>📊 Previous Reports</h3>
+    {% if past_reports %}
+        {% for report in past_reports %}
+            <div class="card">
+                {% if report.ImageURL %}
+                    <img src="{{ report.ImageURL }}" alt="Plant Image" style="width: 150px; height: 150px;">
+                {% else %}
+                    <p>No Image Available</p>
+                {% endif %}
+                
+                <p><strong>Plant Type:</strong> {{ report.PlantType }}</p>
+                <p><strong>Disease Detected:</strong> {{ report.DiseaseDetected }}</p>
+                <p><strong>Solution:</strong> {{ report.Solution }}</p>
+                <p><strong>Confidence Level:</strong> {{ report.ConfidenceLevel }}</p>
+                <p><strong>Precautions:</strong> {{ report.Precautions }}</p>
+                <p><strong>Plant Health:</strong> 
+                    <span style="background-color: {% if report.PlantHealth == 'Healthy' %}green{% else %}red{% endif %}; padding: 5px; color: white;">
+                        {{ report.PlantHealth }}
+                    </span>
+                </p>
+                <p><strong>Timestamp:</strong> {{ report.Timestamp }}</p>
+
+                <!-- Delete Button -->
+                <form method="POST" action="{% url 'delete_report' report.Timestamp %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+            <hr>
+        {% endfor %}
+    {% else %}
+        <p>No previous reports available.</p>
+    {% endif %}
+</div>
+{% endblock %}

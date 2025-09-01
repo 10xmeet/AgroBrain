@@ -1,0 +1,3 @@
+model/*.h5
+yolov5/yolov5s.pt
+myapp/models/*.h5

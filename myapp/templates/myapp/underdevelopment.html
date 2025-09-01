@@ -1,0 +1,109 @@
+{% extends 'myapp/base.html' %}
+
+{% block title %}Plant Health{% endblock %}
+
+{% block content %}
+<style>
+  /* Background layer for scrolling lines */
+  .dev-bg-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .dev-marquee-row {
+    position: absolute;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: 2.25rem;
+    font-weight: 900;
+    color: #047857; /* emerald-700 */
+    opacity: 0.1;
+    text-transform: uppercase;
+  }
+
+  .dev-marquee-inner {
+    display: inline-block;
+    padding-left: 100%;
+    animation: marquee 10s linear infinite;
+    will-change: transform;
+  }
+
+  @keyframes marquee {
+    0%   { transform: translateX(0%); }
+    100% { transform: translateX(-100%); }
+  }
+</style>
+
+<!-- 🔄 Scrolling UNDER DEVELOPMENT Background -->
+<div class="dev-bg-layer">
+  <div class="dev-marquee-row" style="top: 20%;">
+    <div class="dev-marquee-inner">🚧 UNDER DEVELOPMENT 🚧 UNDER DEVELOPMENT 🚧 UNDER DEVELOPMENT 🚧 UNDER DEVELOPMENT 🚧</div>
+  </div>
+  <div class="dev-marquee-row" style="top: 35%;">
+    <div class="dev-marquee-inner" style="animation-delay: 2s;">🚧 UNDER DEVELOPMENT 🚧 UNDER DEVELOPMENT 🚧 UNDER DEVELOPMENT 🚧 UNDER DEVELOPMENT 🚧</div>
+  </div>
+  <div class="dev-marquee-row" style="top: 50%;">
+    <div class="dev-marquee-inner" style="animation-delay: 4s;">🚧 UNDER DEVELOPMENT 🚧 UNDER DEVELOPMENT 🚧 UNDER DEVELOPMENT 🚧 UNDER DEVELOPMENT 🚧</div>
+  </div>
+  <div class="dev-marquee-row" style="top: 65%;">
+    <div class="dev-marquee-inner" style="animation-delay: 6s;">🚧 UNDER DEVELOPMENT 🚧 UNDER DEVELOPMENT 🚧 UNDER DEVELOPMENT 🚧 UNDER DEVELOPMENT 🚧</div>
+  </div>
+</div>
+
+<!-- 🌿 Main Content -->
+<div class="relative min-h-screen bg-gradient-to-b from-emerald-100 to-white flex items-center justify-center px-4 py-12 overflow-hidden">
+  <div class="relative z-10 bg-white border-2 border-emerald-200 rounded-3xl shadow-2xl max-w-2xl w-full p-8 text-center">
+    
+    <!-- GIF -->
+    <div class="flex justify-center mb-6">
+      <img src="https://media.giphy.com/media/qgQUggAC3Pfv687qPC/giphy.gif" alt="Under Construction Plant" class="w-64 h-64 rounded-xl shadow-md border border-emerald-100">
+    </div>
+
+    <!-- Title -->
+    <h2 class="text-3xl font-bold text-emerald-700 mb-4">🚧 UNDER DEVELOPMENT 🚧</h2>
+    <h2 class="text-3xl font-bold text-emerald-700 mb-4">Plant Health Intelligence is Growing 🌿</h2>
+    
+    <!-- Description -->
+    <p class="text-emerald-600 mb-8 text-lg">
+      Our AI-powered Plant Health module is taking root! Soon, you’ll be able to analyze, diagnose, and boost your crop health using smart visuals and real-time feedback.
+    </p>
+
+    <!-- Features -->
+    <div class="grid sm:grid-cols-2 gap-6 text-left text-emerald-700 mb-8">
+      <div class="flex items-start gap-3">
+        <svg class="w-6 h-6 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+        <span>Leaf health detection</span>
+      </div>
+      <div class="flex items-start gap-3">
+        <svg class="w-6 h-6 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        <span>AI-based disease alerts</span>
+      </div>
+      <div class="flex items-start gap-3">
+        <svg class="w-6 h-6 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6h6v6h4l-7 7-7-7h4z" />
+        </svg>
+        <span>Soil health indicators</span>
+      </div>
+      <div class="flex items-start gap-3">
+        <svg class="w-6 h-6 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 6h18M3 14h18M3 18h18" />
+        </svg>
+        <span>Personalized tips for your crops</span>
+      </div>
+    </div>
+
+    <!-- Button -->
+    <button onclick="window.history.back()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-6 rounded-xl shadow-md transition-all duration-300">
+      ← Go Back
+    </button>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,1294 @@
+{% extends 'myapp/base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="bg-emerald-50 min-h-screen px-4 sm:px-6 lg:px-8 py-8">
+  <div class="max-w-6xl mx-auto">
+    <!-- Hero Section with Carousel -->
+    <div class="mb-8 rounded-2xl overflow-hidden">
+      <div class="relative h-96">
+        <!-- Carousel container -->
+        <div class="carousel relative overflow-hidden h-full">
+          <!-- Carousel slides -->
+          <!-- Slide 1 -->
+          <div class="carousel-item absolute w-full h-full transition-opacity duration-500 ease-in-out opacity-100">
+            <div class="relative h-full bg-cover bg-center" style="background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)), url('https://media-hosting.imagekit.io//6b5344fd22f444d2/WhatsApp%20Image%202025-02-06%20at%2022.33.30_a1bbf03b.jpg?Expires=1833469576&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=PADuhXja3LDSdzkmI6l-wAzr4XavZ2jiaMeRfCJqIXSbmPo6AY8ydR99RFs8TLxbCnCniJAoWVavMYKGiBl2QFhTQ9ohsc1taF~H7uVlHX2yxRXmYex7MDBoSrCPJCeEpYpI1i7uqk0lAbpsXn3LzpQv4g43YGR1AoSPiE-7tRwq1~nIPOqLER6FMian3Uq2ubSqnnFUct7rR6fmHzs2RCq6Z6GfETXemyfUV9NN0XeKcnhpHL-apDBSyz6NeSJhw-4vNRTNQcQiRcXvXplQb6He8-ChkCPc9Ho7RBcrYniDodpSjp65ZwHAMukfOtKBWE~MthYSwj6YvUs-33m3jw__')">
+              <div class="absolute bottom-0 left-0 right-0 p-8 text-white bg-gradient-to-t from-emerald-900/60">
+                <h1 class="text-4xl font-bold mb-2">Empowering Farmers with Smart Agriculture Insights!</h1>
+                <p class="text-lg">Stay ahead in farming with real-time market trends, weather forecasts, and data-driven decisions.</p>
+              </div>
+            </div>
+          </div>
+          <!-- Slide 2 -->
+          <div class="carousel-item absolute w-full h-full transition-opacity duration-500 ease-in-out opacity-0">
+            <div class="relative h-full bg-cover bg-center" style="background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)), url('https://media-hosting.imagekit.io//ff484b6067a44be7/WhatsApp%20Image%202025-02-06%20at%2022.48.37_25324311.jpg?Expires=1833470625&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=2QKZC1A7mKCM8EGP67Ny2kA6gykV-DGJqdlSG0bS84WzYFttFNd6hYaqJF8PpYKxME7PXx6GjyrmSi9NPKWg-0zj0ucziQORVwoKml1qxtd9YhKrd6rzFixzIa4FxwSAL2WkrTD-V6OEV7ah~UCpzudWdJjWJHBdo7io3rdzoiEvpxOoy6HOKPR3EsZ9mXP5D9ZYv6BEvSnbz6MXPa2yGtuNeK0ruMeX1p-isuRenLKgFQIjnpmcU0c51yMZVk3GreJ7sSmC-mllwpgKRzrL6H9m7FPWP~ugf13V8ahu2T7qBk9ft03UG8E7EJGg8num-nLrVN4eaTN1xEiXv4uiWw__')">
+              <div class="absolute bottom-0 left-0 right-0 p-8 text-white bg-gradient-to-t from-emerald-900/60">
+                <h1 class="text-4xl font-bold mb-2">Harvesting Success with Real-Time Data and Forecasts!</h1>
+                <p class="text-lg">Maximize crop yield and reduce resource waste with smart agricultural insights. </p>
+              </div>
+            </div>
+          </div>
+          <!-- Slide 3 -->
+          <div class="carousel-item absolute w-full h-full transition-opacity duration-500 ease-in-out opacity-0">
+            <div class="relative h-full bg-cover bg-center" style="background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)), url('https://media-hosting.imagekit.io//9451e109631047be/WhatsApp%20Image%202025-02-06%20at%2022.33.29_9f5e877f.jpg?Expires=1833469461&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=1KuLCcFU0d0gfQV-QV-LAQ4fEClUGhOY869pO3slhjBhq3c8QiTp9Od-5~IgDGtGuc4BqHtCs-S~EErQkihTGtfA8UKuZ~kqoB6N651bqUGhib0Qb7~o5HsWg5Sx5xNJ0BFUdLX3dfmbAqHRj7ZRwzZ0O-3uacjTZOkzhgouGG05A9lcdB~5DD38n~spgeims5LsoL17zpSue0vevv5NdsMf1oeA1GSKdh-Npl6M0GS7KQgU6~4QPp2~MiNLLAUeOsihXNTYc92201RcnFmcDp2L-tFxPC5jI90O3ddnYqlczPafUd~ymaPbKUa6UjrHtwm~Zeb3DS0VS1dGGNi~Xw__')">
+              <div class="absolute bottom-0 left-0 right-0 p-8 text-white bg-gradient-to-t from-emerald-900/60">
+                <h1 class="text-4xl font-bold mb-2">Innovate, Optimize, and Grow with AgroBrain!</h1>
+                <p class="text-lg">Utilize cutting-edge technology to make informed farming decisions and boost productivity.</p>
+              </div>
+            </div>
+          </div>
+          <!-- Slide 4 -->
+          <div class="carousel-item absolute w-full h-full transition-opacity duration-500 ease-in-out opacity-0">
+            <div class="relative h-full bg-cover bg-center" style="background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)), url('https://media-hosting.imagekit.io//953f69f6ac7444a7/StockCake-Young%20plants%20growing_1738244167.jpg?Expires=1832853004&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=YFi9iB~Nd0hBBooTSbG1IRCCfuw555e5QIR7NBgkDJvzkHUaueJyUnrDqKGE4D8zCiJLvWdhJKpfRkn9q3vjcwIwcn3~dgFMP-2MBzWgDnmj0igpF7IqKUCQEep2mJZfnUXHv9l-1PLzfNI79hjtaoPvzCRXgfxZM2MaA2kFcxlLF1Hy4n07bfyhQH~zvORk5Eu2fu4~mTucKdNA7gijRHDm73HTfUG03Cmywv9AHZmzGxrAhBcqKN3zc7KSmdwckDJ-ji~WjYUz~aP2MZYVRBJlqIv~y2V7R0KG8vh-xZzsA5KQSRbWt05~rFm38Ksq-IuPL~CWLnacXrcDSMMB1A__')">
+              <div class="absolute bottom-0 left-0 right-0 p-8 text-white bg-gradient-to-t from-emerald-900/60">
+                <h1 class="text-4xl font-bold mb-2">Smart Farming for a Sustainable Future!</h1>
+                <p class="text-lg">Enhance efficiency and sustainability with data-backed agricultural solutions.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Carousel controls -->
+        <button class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white/30 text-white p-2 rounded-full hover:bg-white/50 transition-colors" id="prevBtn">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+        </button>
+        <button class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white/30 text-white p-2 rounded-full hover:bg-white/50 transition-colors" id="nextBtn">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Dashboard Controls -->
+    <div class="mb-6 flex justify-between items-center">
+      <h2 class="text-2xl font-bold text-emerald-800">Farm Dashboard</h2>
+      <button id="customize-dashboard-btn" class="flex items-center gap-2 text-sm bg-emerald-600 text-white rounded-lg px-3 py-2 hover:bg-emerald-700 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+        Customize Dashboard
+      </button>
+    </div>
+
+    <!-- Customization Panel (Hidden by default) -->
+    <div id="customization-panel" class="hidden mb-6 bg-white rounded-xl p-6 shadow-sm border border-emerald-100">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="font-semibold text-emerald-800">Dashboard Customization</h3>
+        <button id="close-customize-panel" class="text-gray-500 hover:text-gray-700">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Widget Visibility -->
+        <div>
+          <h4 class="text-sm font-medium text-gray-700 mb-3">Widget Visibility</h4>
+          <div class="space-y-2">
+            <label class="flex items-center gap-2">
+              <input type="checkbox" class="widget-toggle" data-widget="farm-health" checked>
+              <span class="text-sm text-gray-600">Farm Health Score</span>
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="checkbox" class="widget-toggle" data-widget="crop-status" checked>
+              <span class="text-sm text-gray-600">Crop Status</span>
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="checkbox" class="widget-toggle" data-widget="soil-health" checked>
+              <span class="text-sm text-gray-600">Soil Health</span>
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="checkbox" class="widget-toggle" data-widget="upcoming-tasks" checked>
+              <span class="text-sm text-gray-600">Upcoming Tasks</span>
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="checkbox" class="widget-toggle" data-widget="weather-forecast" checked>
+              <span class="text-sm text-gray-600">Weather Forecast</span>
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="checkbox" class="widget-toggle" data-widget="market-trends" checked>
+              <span class="text-sm text-gray-600">Market Trends</span>
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="checkbox" class="widget-toggle" data-widget="crop-health" checked>
+              <span class="text-sm text-gray-600">Crop Health Analysis</span>
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="checkbox" class="widget-toggle" data-widget="news" checked>
+              <span class="text-sm text-gray-600">Latest News</span>
+            </label>
+          </div>
+        </div>
+        
+        <!-- Layout Options -->
+        <div>
+          <h4 class="text-sm font-medium text-gray-700 mb-3">Layout Options</h4>
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm text-gray-600 mb-1">Dashboard Theme</label>
+              <select id="dashboard-theme" class="w-full text-sm border border-emerald-200 rounded-lg px-3 py-2">
+                <option value="default">Default (Green)</option>
+                <option value="blue">Blue</option>
+                <option value="purple">Purple</option>
+                <option value="orange">Orange</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm text-gray-600 mb-1">Card Size</label>
+              <select id="card-size" class="w-full text-sm border border-emerald-200 rounded-lg px-3 py-2">
+                <option value="default">Default</option>
+                <option value="compact">Compact</option>
+                <option value="large">Large</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm text-gray-600 mb-1">Data Refresh Rate</label>
+              <select id="refresh-rate" class="w-full text-sm border border-emerald-200 rounded-lg px-3 py-2">
+                <option value="30">Every 30 seconds</option>
+                <option value="60" selected>Every minute</option>
+                <option value="300">Every 5 minutes</option>
+                <option value="600">Every 10 minutes</option>
+                <option value="manual">Manual refresh only</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mt-6 flex justify-end gap-3">
+        <button id="reset-dashboard" class="text-sm border border-gray-300 rounded-lg px-4 py-2 hover:bg-gray-50 transition-colors">
+          Reset to Default
+        </button>
+        <button id="save-dashboard" class="text-sm bg-emerald-600 text-white rounded-lg px-4 py-2 hover:bg-emerald-700 transition-colors">
+          Save Changes
+        </button>
+      </div>
+    </div>
+
+    <!-- Dashboard Overview Section -->
+    <div class="mb-8" id="dashboard-widgets">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Farm Health Score -->
+        <div id="widget-farm-health" class="bg-white rounded-xl p-6 shadow-sm border border-emerald-100 hover:shadow-md transition-shadow">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-3">
+              <div class="p-2 bg-emerald-100 rounded-lg">
+                <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+              </div>
+              <h3 class="text-emerald-800 font-semibold">Farm Health</h3>
+            </div>
+            <span class="text-xs text-gray-500">Last 30 days</span>
+          </div>
+          <div class="text-center">
+            <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-emerald-50 mb-3">
+              <span class="text-3xl font-bold text-emerald-600" id="farm-health-score">85%</span>
+            </div>
+            <p class="text-sm text-gray-600">Overall farm health score based on crop conditions, soil health, and weather patterns</p>
+          </div>
+        </div>
+        
+        <!-- Crop Status -->
+        <div id="widget-crop-status" class="bg-white rounded-xl p-6 shadow-sm border border-emerald-100 hover:shadow-md transition-shadow">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-3">
+              <div class="p-2 bg-emerald-100 rounded-lg">
+                <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+                </svg>
+              </div>
+              <h3 class="text-emerald-800 font-semibold">Crop Status</h3>
+            </div>
+            <span class="text-xs text-gray-500">Current</span>
+          </div>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-600">Wheat</span>
+              <div class="w-2/3 bg-gray-200 rounded-full h-2.5">
+                <div class="bg-emerald-600 h-2.5 rounded-full" style="width: 75%"></div>
+              </div>
+              <span class="text-xs font-medium text-emerald-800">75%</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-600">Rice</span>
+              <div class="w-2/3 bg-gray-200 rounded-full h-2.5">
+                <div class="bg-emerald-600 h-2.5 rounded-full" style="width: 90%"></div>
+              </div>
+              <span class="text-xs font-medium text-emerald-800">90%</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-600">Corn</span>
+              <div class="w-2/3 bg-gray-200 rounded-full h-2.5">
+                <div class="bg-emerald-600 h-2.5 rounded-full" style="width: 60%"></div>
+              </div>
+              <span class="text-xs font-medium text-emerald-800">60%</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Soil Health -->
+        <div id="widget-soil-health" class="bg-white rounded-xl p-6 shadow-sm border border-emerald-100 hover:shadow-md transition-shadow">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-3">
+              <div class="p-2 bg-emerald-100 rounded-lg">
+                <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+              </div>
+              <h3 class="text-emerald-800 font-semibold">Soil Health</h3>
+            </div>
+            <span class="text-xs text-gray-500">Current</span>
+          </div>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-600">Moisture</span>
+              <div class="w-2/3 bg-gray-200 rounded-full h-2.5">
+                <div class="bg-blue-500 h-2.5 rounded-full" style="width: 65%"></div>
+              </div>
+              <span class="text-xs font-medium text-blue-800">65%</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-600">Nutrients</span>
+              <div class="w-2/3 bg-gray-200 rounded-full h-2.5">
+                <div class="bg-emerald-500 h-2.5 rounded-full" style="width: 80%"></div>
+              </div>
+              <span class="text-xs font-medium text-emerald-800">80%</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-600">pH Level</span>
+              <div class="w-2/3 bg-gray-200 rounded-full h-2.5">
+                <div class="bg-yellow-500 h-2.5 rounded-full" style="width: 70%"></div>
+              </div>
+              <span class="text-xs font-medium text-yellow-800">70%</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Upcoming Tasks -->
+        <div id="widget-upcoming-tasks" class="bg-white rounded-xl p-6 shadow-sm border border-emerald-100 hover:shadow-md transition-shadow">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-3">
+              <div class="p-2 bg-emerald-100 rounded-lg">
+                <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                </svg>
+              </div>
+              <h3 class="text-emerald-800 font-semibold">Tasks</h3>
+            </div>
+            <span class="text-xs text-gray-500">Next 7 days</span>
+          </div>
+          <ul class="space-y-2 text-sm">
+            <li class="flex items-center justify-between p-2 bg-emerald-50 rounded">
+              <span>Irrigation Check</span>
+              <span class="text-xs text-emerald-700">Tomorrow</span>
+            </li>
+            <li class="flex items-center justify-between p-2 bg-emerald-50 rounded">
+              <span>Apply Fertilizer</span>
+              <span class="text-xs text-emerald-700">In 3 days</span>
+            </li>
+            <li class="flex items-center justify-between p-2 bg-emerald-50 rounded">
+              <span>Pest Inspection</span>
+              <span class="text-xs text-emerald-700">In 5 days</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Crop Health Visualization -->
+    <div class="mb-8 bg-white rounded-xl p-6 shadow-sm border border-emerald-100">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-bold text-emerald-800">Crop Health Analysis</h2>
+        <div class="flex items-center gap-2">
+          <select id="crop-select" class="text-sm border border-emerald-200 rounded-lg p-2">
+            <option value="all">All Crops</option>
+            <option value="wheat">Wheat</option>
+            <option value="rice">Rice</option>
+            <option value="corn">Corn</option>
+          </select>
+          <select id="time-period" class="text-sm border border-emerald-200 rounded-lg p-2">
+            <option value="week">Last Week</option>
+            <option value="month" selected>Last Month</option>
+            <option value="quarter">Last Quarter</option>
+          </select>
+        </div>
+      </div>
+      <div class="h-80">
+        <canvas id="cropHealthChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Weather Forecast Section -->
+    <div class="mb-8 bg-white rounded-xl p-6 shadow-sm border border-emerald-100">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-bold text-emerald-800">Weather Forecast</h2>
+        <div class="flex items-center gap-2">
+          <button id="forecast-toggle-daily" class="text-sm bg-emerald-600 text-white rounded-lg px-3 py-1 active">Daily</button>
+          <button id="forecast-toggle-hourly" class="text-sm bg-emerald-100 text-emerald-800 rounded-lg px-3 py-1">Hourly</button>
+        </div>
+      </div>
+      
+      <!-- Current Weather Card -->
+      <div class="mb-6 p-4 bg-emerald-50 rounded-lg">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <div class="p-2 bg-white rounded-full shadow-sm">
+              <img id="current-weather-icon" class="h-12 w-12" src="" alt="Weather Icon">
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-emerald-800" id="current-temp">--°C</h3>
+              <p class="text-emerald-600" id="current-desc">Partly Cloudy</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <p class="text-sm text-gray-600">Today, <span id="current-date"></span></p>
+            <div class="mt-1 flex items-center gap-4">
+              <span class="flex items-center text-sm text-blue-600">💧 <span id="current-humidity">--</span>%</span>
+              <span class="flex items-center text-sm text-emerald-600">💨 <span id="current-wind">--</span> km/h</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 7-Day Forecast -->
+      <div id="daily-forecast" class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2">
+        <!-- Will be populated by JavaScript -->
+      </div>
+      
+      <!-- Hourly Forecast (Hidden by default) -->
+      <div id="hourly-forecast" class="hidden overflow-x-auto">
+        <div class="flex space-x-4 min-w-max pb-2">
+          <!-- Will be populated by JavaScript -->
+        </div>
+      </div>
+    </div>
+    
+    <!-- Weather & News Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+      <!-- Market Trends Chart -->
+      <div class="bg-white rounded-xl p-6 shadow-sm border border-emerald-100 hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-4">
+            <div class="p-3 bg-emerald-100 rounded-lg">
+              <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/>
+              </svg>
+            </div>
+            <h3 class="text-emerald-800 font-semibold">Market Trends</h3>
+          </div>
+          <div class="flex items-center gap-2">
+            <select id="market-crop-select" class="text-sm border border-emerald-200 rounded-lg px-2 py-1">
+              <option value="wheat">Wheat</option>
+              <option value="corn">Corn</option>
+              <option value="rice">Rice</option>
+              <option value="soybean">Soybean</option>
+              <option value="cotton">Cotton</option>
+            </select>
+            <select id="market-period-select" class="text-sm border border-emerald-200 rounded-lg px-2 py-1">
+              <option value="week">Week</option>
+              <option value="month" selected>Month</option>
+              <option value="quarter">Quarter</option>
+              <option value="year">Year</option>
+            </select>
+          </div>
+        </div>
+        <div class="h-64">
+          <canvas id="market-trends-chart"></canvas>
+        </div>
+        <div class="mt-4 flex justify-between text-sm">
+          <div>
+            <p class="text-gray-500">Current Price:</p>
+            <p class="text-emerald-700 font-bold" id="current-price">$5.78/kg</p>
+          </div>
+          <div>
+            <p class="text-gray-500">Predicted (7 days):</p>
+            <p class="text-emerald-700 font-bold" id="predicted-price">$5.92/kg</p>
+          </div>
+          <div>
+            <p class="text-gray-500">Change:</p>
+            <p class="text-green-600 font-bold" id="price-change">+2.4%</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- News Card -->
+      <div class="bg-white rounded-xl p-6 shadow-sm border border-emerald-100 hover:shadow-md transition-shadow cursor-pointer" onclick="window.location.href='{% url 'news' %}'">
+        <div class="flex items-center gap-4 mb-4">
+          <div class="p-3 bg-emerald-100 rounded-lg">
+            <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+            </svg>
+          </div>
+          <h3 class="text-emerald-800 font-semibold">Latest News</h3>
+        </div>
+        <div class="space-y-4">
+          {% for article in news %}
+<div class="flex items-center pb-4 border-b border-emerald-50">
+    <img src="{{ article.urlToImage|default:'https://media-hosting.imagekit.io//67f28409d7a848d5/WhatsApp%20Image%202025-01-29%20at%2019.06.25_3de84510.jpg?Expires=1833215583&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=gHbtcohCx41vKJsk8v6gZTTsZwyC3YWElEPNzUoUpSbGw1MoFR6Stqhzt9v1DGf6RnY4P~uE-gbXVb3or0h~4w0ifXYTLsf4HJ3qB3qX9V4NwbuZhInntqpdUIfehbsBYTZL0jiLoCC4xrd4ez6qLNX20T~nE7Yp6qSc61qgxr-Hd5nhU6OwKMbpdG7t9jVXdoxvHAiC5yGFmcKSLExmOKx9tQPxiLOWURUtSS~GlWbP1eXeKvz9ajo7g9ZEoup6ld9f7H7B7naeb40gVgRuFmOJXzzeBQt99Z88ZVdTR65AUQ~TLaBpANZGoLm8wtRQh1iD9lC3yco56Ospp0FNLw__' }}" alt="{{ article.title }}" class="w-16 h-16 object-cover rounded-lg mr-4">
+    <div>
+        <h4 class="font-medium text-emerald-900">{{ article.title }}</h4>
+        <p class="text-sm text-gray-600 mt-1">{{ article.description }}</p>
+    </div>
+</div>
+{% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // Safely parse weather data with error handling
+  let weatherData;
+  try {
+    weatherData = {{ weather|safe }};
+  } catch (e) {
+    console.error('Error parsing weather data:', e);
+    weatherData = {};
+  }
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    // Check if weather data exists and has the expected structure
+    if (weatherData && weatherData.main) {
+      // Single weather object
+      const currentWeather = weatherData;
+      const currentTemp = (currentWeather.main.temp - 273.15).toFixed(1); // Convert Kelvin to Celsius
+      const currentWeatherIcon = currentWeather.weather[0].icon;
+      const currentWeatherDescription = currentWeather.weather[0].description;
+      const currentWind = currentWeather.wind.speed;
+      const currentHumidity = currentWeather.main.humidity;
+      
+      document.getElementById('current-temp').textContent = `${currentTemp}°C`;
+      document.getElementById('current-desc').textContent = `${currentWeatherDescription}`;
+      document.getElementById('current-wind').textContent = `${currentWind}`;
+      document.getElementById('current-humidity').textContent = `${currentHumidity}`;
+      document.getElementById('current-weather-icon').src = `https://openweathermap.org/img/wn/${currentWeatherIcon}@2x.png`;
+    } else if (weatherData && Array.isArray(weatherData) && weatherData.length > 0 && weatherData[0].main) {
+      // Array of weather data (old format)
+      const currentWeather = weatherData[0];
+      const currentTemp = (currentWeather.main.temp - 273.15).toFixed(1); // Convert Kelvin to Celsius
+      const currentWeatherIcon = currentWeather.weather[0].icon;
+      const currentWeatherDescription = currentWeather.weather[0].description;
+      const currentWind = currentWeather.wind.speed;
+      const currentHumidity = currentWeather.main.humidity;
+      
+      document.getElementById('current-temp').textContent = `${currentTemp}°C`;
+      document.getElementById('current-desc').textContent = `${currentWeatherDescription}`;
+      document.getElementById('current-wind').textContent = `${currentWind}`;
+      document.getElementById('current-humidity').textContent = `${currentHumidity}`;
+      document.getElementById('current-weather-icon').src = `https://openweathermap.org/img/wn/${currentWeatherIcon}@2x.png`;
+    } else {
+      // No weather data or unexpected format
+      document.getElementById('current-temp').textContent = 'N/A';
+      document.getElementById('current-desc').textContent = 'Weather data unavailable';
+      document.getElementById('current-wind').textContent = 'N/A';
+      document.getElementById('current-humidity').textContent = 'N/A';
+      document.getElementById('current-weather-icon').src = 'https://openweathermap.org/img/wn/01d@2x.png'; // Default icon
+    }
+    
+    // Carousel functionality
+    const carousel = document.querySelector('.carousel');
+    const items = carousel.querySelectorAll('.carousel-item');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    let currentIndex = 0;
+
+    function showSlide(index) {
+      items.forEach((item, i) => {
+        item.style.opacity = i === index ? '1' : '0';
+      });
+    }
+
+    function nextSlide() {
+      currentIndex = (currentIndex + 1) % items.length;
+      showSlide(currentIndex);
+    }
+
+    function prevSlide() {
+      currentIndex = (currentIndex - 1 + items.length) % items.length;
+      showSlide(currentIndex);
+    }
+
+    nextBtn.addEventListener('click', nextSlide);
+    prevBtn.addEventListener('click', prevSlide);
+
+    // Auto-advance slides every 7 seconds
+    setInterval(nextSlide, 7000);
+    
+    // Weather forecast functionality
+    const dailyForecastContainer = document.getElementById('daily-forecast');
+    const hourlyForecastContainer = document.getElementById('hourly-forecast');
+    const dailyToggleBtn = document.getElementById('forecast-toggle-daily');
+    const hourlyToggleBtn = document.getElementById('forecast-toggle-hourly');
+    const currentDateElement = document.getElementById('current-date');
+
+    // Set current date
+    const today = new Date();
+    currentDateElement.textContent = today.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+    // Toggle between daily and hourly forecast
+    dailyToggleBtn.addEventListener('click', function() {
+      dailyToggleBtn.classList.add('bg-emerald-600', 'text-white');
+      dailyToggleBtn.classList.remove('bg-emerald-100', 'text-emerald-800');
+      hourlyToggleBtn.classList.add('bg-emerald-100', 'text-emerald-800');
+      hourlyToggleBtn.classList.remove('bg-emerald-600', 'text-white');
+      dailyForecastContainer.classList.remove('hidden');
+      hourlyForecastContainer.classList.add('hidden');
+    });
+
+    hourlyToggleBtn.addEventListener('click', function() {
+      hourlyToggleBtn.classList.add('bg-emerald-600', 'text-white');
+      hourlyToggleBtn.classList.remove('bg-emerald-100', 'text-emerald-800');
+      dailyToggleBtn.classList.add('bg-emerald-100', 'text-emerald-800');
+      dailyToggleBtn.classList.remove('bg-emerald-600', 'text-white');
+      hourlyForecastContainer.classList.remove('hidden');
+      dailyForecastContainer.classList.add('hidden');
+    });
+    
+    // Generate forecast data
+    generateForecastData();
+    
+    // Initialize market trends chart
+    initMarketTrendsChart();
+  });
+  
+  // Function to generate mock forecast data
+  function generateForecastData() {
+    const dailyForecastContainer = document.getElementById('daily-forecast');
+    const hourlyForecastContainer = document.getElementById('hourly-forecast').querySelector('div') || document.getElementById('hourly-forecast');
+    
+    // Clear existing forecast data
+    dailyForecastContainer.innerHTML = '';
+    hourlyForecastContainer.innerHTML = '';
+    
+    // Generate 7-day forecast
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const today = new Date();
+    const currentDay = today.getDay();
+    
+    for (let i = 0; i < 7; i++) {
+      const dayIndex = (currentDay + i) % 7;
+      const dayName = days[dayIndex];
+      const date = new Date();
+      date.setDate(today.getDate() + i);
+      const dateStr = date.getDate();
+      
+      // Random temperature variation
+      const minTemp = Math.round(15 + Math.random() * 5);
+      const maxTemp = Math.round(minTemp + 5 + Math.random() * 5);
+      
+      // Random weather condition
+      const conditions = ['01d', '02d', '03d', '10d'];
+      const icon = conditions[Math.floor(Math.random() * conditions.length)];
+      
+      // Create daily forecast card
+      const dayCard = document.createElement('div');
+      dayCard.className = 'bg-emerald-50 rounded-lg p-3 text-center';
+      dayCard.innerHTML = `
+        <p class="text-sm font-medium text-emerald-800">${dayName} ${dateStr}</p>
+        <img class="h-10 w-10 mx-auto my-2" src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="Weather">
+        <p class="text-xs text-gray-600">${minTemp}° <span class="font-medium text-emerald-700">${maxTemp}°</span></p>
+      `;
+      
+      dailyForecastContainer.appendChild(dayCard);
+      
+      // Generate hourly forecast for today only
+      if (i === 0) {
+        const currentHour = today.getHours();
+        for (let h = 0; h < 24; h += 3) { // Every 3 hours
+          const hour = (currentHour + h) % 24;
+          const hourFormatted = hour === 0 ? '12 AM' : hour < 12 ? `${hour} AM` : hour === 12 ? '12 PM' : `${hour - 12} PM`;
+          
+          // Random temperature for the hour
+          const hourTemp = Math.round(18 + Math.random() * 10);
+          
+          // Random condition for the hour
+          const hourIcon = conditions[Math.floor(Math.random() * conditions.length)];
+          
+          // Create hourly forecast item
+          const hourItem = document.createElement('div');
+          hourItem.className = 'bg-emerald-50 rounded-lg p-3 text-center min-w-[80px]';
+          hourItem.innerHTML = `
+            <p class="text-sm font-medium text-emerald-800">${hourFormatted}</p>
+            <img class="h-8 w-8 mx-auto my-2" src="https://openweathermap.org/img/wn/${hourIcon}@2x.png" alt="Weather">
+            <p class="text-sm font-medium text-emerald-700">${hourTemp}°</p>
+          `;
+          
+          hourlyForecastContainer.appendChild(hourItem);
+        }
+      }
+    }
+  }
+  
+  // Function to initialize market trends chart
+  function initMarketTrendsChart() {
+    const ctx = document.getElementById('market-trends-chart').getContext('2d');
+    let marketChart;
+    
+    // Generate dates for the last 30 days
+    function generateDates(days) {
+      const dates = [];
+      const today = new Date();
+      
+      for (let i = days; i >= 0; i--) {
+        const date = new Date();
+        date.setDate(today.getDate() - i);
+        dates.push(date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+      }
+      
+      return dates;
+    }
+    
+    // Generate random price data with a trend
+    function generatePriceData(days, basePrice, volatility, trend) {
+      const prices = [];
+      let price = basePrice;
+      
+      for (let i = 0; i <= days; i++) {
+        // Add random variation with trend
+        price = price + (Math.random() * volatility * 2 - volatility) + trend;
+        // Ensure price doesn't go below 1
+        price = Math.max(1, price);
+        prices.push(price.toFixed(2));
+      }
+      
+      return prices;
+    }
+    
+    // Generate prediction data (slightly higher trend)
+    function generatePredictionData(days, lastPrice, volatility, trend) {
+      const predictions = [lastPrice];
+      let price = parseFloat(lastPrice);
+      
+      for (let i = 1; i <= days; i++) {
+        price = price + (Math.random() * volatility * 2 - volatility) + trend * 1.5;
+        price = Math.max(1, price);
+        predictions.push(price.toFixed(2));
+      }
+      
+      return predictions;
+    }
+    
+    // Create chart with initial data
+    function createChart(crop, period) {
+      // Clear previous chart if it exists
+      if (marketChart) {
+        marketChart.destroy();
+      }
+      
+      // Set base price and volatility based on crop
+      const cropData = {
+        wheat: { basePrice: 5.75, volatility: 0.15, trend: 0.02 },
+        corn: { basePrice: 3.80, volatility: 0.12, trend: 0.01 },
+        rice: { basePrice: 7.25, volatility: 0.18, trend: 0.03 },
+        soybean: { basePrice: 9.40, volatility: 0.20, trend: -0.01 },
+        cotton: { basePrice: 4.20, volatility: 0.14, trend: 0.02 }
+      };
+      
+      // Set days based on period
+      const periodDays = {
+        week: 7,
+        month: 30,
+        quarter: 90,
+        year: 365
+      };
+      
+      const days = periodDays[period];
+      const { basePrice, volatility, trend } = cropData[crop];
+      
+      // Generate data
+      const labels = generateDates(days);
+      const priceData = generatePriceData(days, basePrice, volatility, trend);
+      const lastPrice = priceData[priceData.length - 1];
+      
+      // Generate prediction data (7 days into future)
+      const futureDays = 7;
+      const futureDates = [];
+      const today = new Date();
+      
+      for (let i = 1; i <= futureDays; i++) {
+        const date = new Date();
+        date.setDate(today.getDate() + i);
+        futureDates.push(date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+      }
+      
+      const predictionData = generatePredictionData(futureDays, lastPrice, volatility, trend);
+      
+      // Create combined dataset with null values for gaps
+      const historicalDataset = [...priceData, ...Array(futureDays).fill(null)];
+      const predictionDataset = [...Array(days + 1).fill(null), ...predictionData.slice(1)];
+      
+      // Update price display
+      document.getElementById('current-price').textContent = `$${lastPrice}/kg`;
+      document.getElementById('predicted-price').textContent = `$${predictionData[predictionData.length - 1]}/kg`;
+      
+      // Calculate price change percentage
+      const priceChange = ((predictionData[predictionData.length - 1] - lastPrice) / lastPrice * 100).toFixed(1);
+      const priceChangeElement = document.getElementById('price-change');
+      priceChangeElement.textContent = `${priceChange > 0 ? '+' : ''}${priceChange}%`;
+      
+      // Set color based on price change
+      if (priceChange > 0) {
+        priceChangeElement.classList.remove('text-red-600');
+        priceChangeElement.classList.add('text-green-600');
+      } else {
+        priceChangeElement.classList.remove('text-green-600');
+        priceChangeElement.classList.add('text-red-600');
+      }
+      
+      // Create chart
+      marketChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: [...labels, ...futureDates],
+          datasets: [
+            {
+              label: 'Historical Price',
+              data: historicalDataset,
+              borderColor: '#059669',
+              backgroundColor: 'rgba(5, 150, 105, 0.1)',
+              borderWidth: 2,
+              pointRadius: 0,
+              fill: true
+            },
+            {
+              label: 'Predicted Price',
+              data: predictionDataset,
+              borderColor: '#0284c7',
+              borderDash: [5, 5],
+              borderWidth: 2,
+              pointRadius: 0,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top',
+              labels: {
+                usePointStyle: true,
+                boxWidth: 6
+              }
+            },
+            tooltip: {
+              mode: 'index',
+              intersect: false,
+              callbacks: {
+                label: function(context) {
+                  return `${context.dataset.label}: $${context.raw}/kg`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: {
+                display: false
+              },
+              ticks: {
+                maxRotation: 0,
+                autoSkip: true,
+                maxTicksLimit: 8
+              }
+            },
+            y: {
+              grid: {
+                color: 'rgba(0, 0, 0, 0.05)'
+              },
+              ticks: {
+                callback: function(value) {
+                  return '$' + value;
+                }
+              }
+            }
+          },
+          interaction: {
+            intersect: false,
+            mode: 'index'
+          }
+        }
+      });
+    }
+    
+    // Initialize chart with default values
+    createChart('wheat', 'month');
+    
+    // Add event listeners for crop and period selectors
+    document.getElementById('market-crop-select').addEventListener('change', function() {
+      const crop = this.value;
+      const period = document.getElementById('market-period-select').value;
+      createChart(crop, period);
+    });
+    
+    document.getElementById('market-period-select').addEventListener('change', function() {
+      const period = this.value;
+      const crop = document.getElementById('market-crop-select').value;
+      createChart(crop, period);
+    });
+  }
+  
+  // Dashboard customization functionality
+  function initDashboardCustomization() {
+    const customizeBtn = document.getElementById('customize-dashboard-btn');
+    const customizationPanel = document.getElementById('customization-panel');
+    const closeCustomizeBtn = document.getElementById('close-customize-panel');
+    const saveBtn = document.getElementById('save-dashboard');
+    const resetBtn = document.getElementById('reset-dashboard');
+    const widgetToggles = document.querySelectorAll('.widget-toggle');
+    const dashboardThemeSelect = document.getElementById('dashboard-theme');
+    const cardSizeSelect = document.getElementById('card-size');
+    const refreshRateSelect = document.getElementById('refresh-rate');
+    
+    // Toggle customization panel
+    customizeBtn.addEventListener('click', function() {
+      customizationPanel.classList.toggle('hidden');
+    });
+    
+    closeCustomizeBtn.addEventListener('click', function() {
+      customizationPanel.classList.add('hidden');
+    });
+    
+    // Widget visibility toggles
+    widgetToggles.forEach(toggle => {
+      toggle.addEventListener('change', function() {
+        const widgetId = this.dataset.widget;
+        const widget = document.getElementById(`widget-${widgetId}`);
+        
+        if (widget) {
+          if (this.checked) {
+            widget.classList.remove('hidden');
+          } else {
+            widget.classList.add('hidden');
+          }
+        }
+        
+        // Special case for sections that aren't direct widgets
+        if (widgetId === 'weather-forecast') {
+          const weatherSection = document.querySelector('.weather-forecast-section');
+          if (weatherSection) {
+            weatherSection.classList.toggle('hidden', !this.checked);
+          }
+        }
+        
+        if (widgetId === 'market-trends') {
+          const marketSection = document.getElementById('market-trends-chart').closest('.bg-white');
+          if (marketSection) {
+            marketSection.classList.toggle('hidden', !this.checked);
+          }
+        }
+        
+        if (widgetId === 'crop-health') {
+          const cropHealthSection = document.querySelector('.crop-health-section');
+          if (cropHealthSection) {
+            cropHealthSection.classList.toggle('hidden', !this.checked);
+          }
+        }
+        
+        if (widgetId === 'news') {
+          const newsSection = document.getElementById('news-container').closest('.bg-white');
+          if (newsSection) {
+            newsSection.classList.toggle('hidden', !this.checked);
+          }
+        }
+      });
+    });
+    
+    // Theme changes
+    dashboardThemeSelect.addEventListener('change', function() {
+      const theme = this.value;
+      const dashboardWidgets = document.getElementById('dashboard-widgets');
+      const root = document.documentElement;
+      
+      // Remove all theme classes
+      dashboardWidgets.classList.remove('theme-default', 'theme-blue', 'theme-purple', 'theme-orange');
+      
+      // Apply selected theme
+      if (theme !== 'default') {
+        dashboardWidgets.classList.add(`theme-${theme}`);
+      }
+      
+      // Update CSS variables based on theme
+      switch (theme) {
+        case 'blue':
+          root.style.setProperty('--primary-color', '#3b82f6');
+          root.style.setProperty('--primary-light', '#dbeafe');
+          root.style.setProperty('--primary-dark', '#1d4ed8');
+          break;
+        case 'purple':
+          root.style.setProperty('--primary-color', '#8b5cf6');
+          root.style.setProperty('--primary-light', '#ede9fe');
+          root.style.setProperty('--primary-dark', '#6d28d9');
+          break;
+        case 'orange':
+          root.style.setProperty('--primary-color', '#f97316');
+          root.style.setProperty('--primary-light', '#ffedd5');
+          root.style.setProperty('--primary-dark', '#c2410c');
+          break;
+        default: // Green (default)
+          root.style.setProperty('--primary-color', '#10b981');
+          root.style.setProperty('--primary-light', '#d1fae5');
+          root.style.setProperty('--primary-dark', '#047857');
+      }
+    });
+    
+    // Card size changes
+    cardSizeSelect.addEventListener('change', function() {
+      const size = this.value;
+      const cards = document.querySelectorAll('#dashboard-widgets > div');
+      
+      cards.forEach(card => {
+        // Remove existing size classes
+        card.classList.remove('p-3', 'p-6', 'p-8');
+        
+        // Apply selected size
+        switch (size) {
+          case 'compact':
+            card.classList.add('p-3');
+            break;
+          case 'large':
+            card.classList.add('p-8');
+            break;
+          default: // Default size
+            card.classList.add('p-6');
+        }
+      });
+    });
+    
+    // Refresh rate changes
+    let refreshInterval;
+    
+    refreshRateSelect.addEventListener('change', function() {
+      const rate = this.value;
+      
+      // Clear existing interval
+      if (refreshInterval) {
+        clearInterval(refreshInterval);
+      }
+      
+      // Set new interval if not manual
+      if (rate !== 'manual') {
+        const seconds = parseInt(rate);
+        refreshInterval = setInterval(refreshDashboardData, seconds * 1000);
+      }
+    });
+    
+    // Function to refresh dashboard data
+    function refreshDashboardData() {
+      console.log('Refreshing dashboard data...');
+      // In a real application, this would fetch new data from the server
+      // For this demo, we'll just update the timestamp
+      
+      const timestamp = new Date().toLocaleTimeString();
+      const refreshIndicator = document.createElement('div');
+      refreshIndicator.className = 'fixed bottom-4 right-4 bg-emerald-600 text-white px-4 py-2 rounded-lg opacity-0 transition-opacity duration-1000';
+      refreshIndicator.textContent = `Data refreshed at ${timestamp}`;
+      
+      document.body.appendChild(refreshIndicator);
+      
+      // Show and then fade out the indicator
+      setTimeout(() => {
+        refreshIndicator.classList.remove('opacity-0');
+        setTimeout(() => {
+          refreshIndicator.classList.add('opacity-0');
+          setTimeout(() => {
+            document.body.removeChild(refreshIndicator);
+          }, 1000);
+        }, 2000);
+      }, 100);
+    }
+    
+    // Save dashboard settings
+    saveBtn.addEventListener('click', function() {
+      // In a real application, this would save to the server/database
+      // For this demo, we'll just show a success message
+      
+      const savedMessage = document.createElement('div');
+      savedMessage.className = 'fixed top-4 right-4 bg-emerald-600 text-white px-4 py-2 rounded-lg';
+      savedMessage.textContent = 'Dashboard settings saved successfully!';
+      
+      document.body.appendChild(savedMessage);
+      
+      setTimeout(() => {
+        document.body.removeChild(savedMessage);
+        customizationPanel.classList.add('hidden');
+      }, 2000);
+      
+      // Save to localStorage for persistence
+      const settings = {
+        theme: dashboardThemeSelect.value,
+        cardSize: cardSizeSelect.value,
+        refreshRate: refreshRateSelect.value,
+        widgets: {}
+      };
+      
+      // Save widget visibility settings
+      widgetToggles.forEach(toggle => {
+        settings.widgets[toggle.dataset.widget] = toggle.checked;
+      });
+      
+      localStorage.setItem('dashboardSettings', JSON.stringify(settings));
+    });
+    
+    // Reset dashboard to defaults
+    resetBtn.addEventListener('click', function() {
+      // Reset all settings to defaults
+      dashboardThemeSelect.value = 'default';
+      cardSizeSelect.value = 'default';
+      refreshRateSelect.value = '60';
+      
+      // Reset all widget toggles to checked
+      widgetToggles.forEach(toggle => {
+        toggle.checked = true;
+        const widgetId = toggle.dataset.widget;
+        const widget = document.getElementById(`widget-${widgetId}`);
+        if (widget) {
+          widget.classList.remove('hidden');
+        }
+      });
+      
+      // Reset theme
+      dashboardThemeSelect.dispatchEvent(new Event('change'));
+      
+      // Reset card size
+      cardSizeSelect.dispatchEvent(new Event('change'));
+      
+      // Reset refresh rate
+      refreshRateSelect.dispatchEvent(new Event('change'));
+      
+      // Show reset confirmation
+      const resetMessage = document.createElement('div');
+      resetMessage.className = 'fixed top-4 right-4 bg-emerald-600 text-white px-4 py-2 rounded-lg';
+      resetMessage.textContent = 'Dashboard reset to defaults!';
+      
+      document.body.appendChild(resetMessage);
+      
+      setTimeout(() => {
+        document.body.removeChild(resetMessage);
+      }, 2000);
+      
+      // Clear localStorage settings
+      localStorage.removeItem('dashboardSettings');
+    });
+    
+    // Load saved settings if they exist
+    const savedSettings = localStorage.getItem('dashboardSettings');
+    if (savedSettings) {
+      const settings = JSON.parse(savedSettings);
+      
+      // Apply saved theme
+      if (settings.theme) {
+        dashboardThemeSelect.value = settings.theme;
+        dashboardThemeSelect.dispatchEvent(new Event('change'));
+      }
+      
+      // Apply saved card size
+      if (settings.cardSize) {
+        cardSizeSelect.value = settings.cardSize;
+        cardSizeSelect.dispatchEvent(new Event('change'));
+      }
+      
+      // Apply saved refresh rate
+      if (settings.refreshRate) {
+        refreshRateSelect.value = settings.refreshRate;
+        refreshRateSelect.dispatchEvent(new Event('change'));
+      }
+      
+      // Apply saved widget visibility
+      if (settings.widgets) {
+        for (const [widgetId, isVisible] of Object.entries(settings.widgets)) {
+          const toggle = document.querySelector(`.widget-toggle[data-widget="${widgetId}"]`);
+          if (toggle) {
+            toggle.checked = isVisible;
+            toggle.dispatchEvent(new Event('change'));
+          }
+        }
+      }
+    }
+  }
+  
+  // Initialize crop health chart
+  function initCropHealthChart() {
+    const ctx = document.getElementById('cropHealthChart').getContext('2d');
+    let cropHealthChart;
+    
+    // Generate dates for the selected period
+    function generateDates(period) {
+      const dates = [];
+      const today = new Date();
+      let days;
+      
+      switch(period) {
+        case 'week':
+          days = 7;
+          break;
+        case 'month':
+          days = 30;
+          break;
+        case 'quarter':
+          days = 90;
+          break;
+        case 'year':
+          days = 365;
+          break;
+        default:
+          days = 30; // Default to month
+      }
+      
+      for (let i = days; i >= 0; i--) {
+        const date = new Date();
+        date.setDate(today.getDate() - i);
+        dates.push(date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+      }
+      
+      return dates;
+    }
+    
+    // Generate random health data with a trend
+    function generateHealthData(days, baseLine, volatility, trend) {
+      const data = [];
+      let value = baseLine;
+      
+      for (let i = 0; i <= days; i++) {
+        // Add random variation with trend
+        value = value + (Math.random() * volatility * 2 - volatility) + trend;
+        // Ensure value stays between 0 and 100
+        value = Math.min(100, Math.max(0, value));
+        data.push(value.toFixed(1));
+      }
+      
+      return data;
+    }
+    
+    // Create chart with initial data
+    function createChart(crop, period) {
+      // Clear previous chart if it exists
+      if (cropHealthChart) {
+        cropHealthChart.destroy();
+      }
+      
+      // Set base health and volatility based on crop
+      const cropData = {
+        corn: { baseHealth: 75, volatility: 2, trend: 0.1 },
+        wheat: { baseHealth: 82, volatility: 1.5, trend: -0.05 },
+        soybean: { baseHealth: 68, volatility: 2.2, trend: 0.15 },
+        rice: { baseHealth: 88, volatility: 1.8, trend: -0.1 }
+      };
+      
+      // Set days based on period
+      const periodDays = {
+        week: 7,
+        month: 30,
+        quarter: 90,
+        year: 365
+      };
+      
+      const days = periodDays[period];
+      const { baseHealth, volatility, trend } = cropData[crop];
+      
+      // Generate data
+      const labels = generateDates(period);
+      const healthData = generateHealthData(days, baseHealth, volatility, trend);
+      
+      // Create chart
+      cropHealthChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Crop Health Index',
+              data: healthData,
+              borderColor: '#059669',
+              backgroundColor: 'rgba(5, 150, 105, 0.1)',
+              borderWidth: 2,
+              pointRadius: 1,
+              fill: true,
+              tension: 0.4
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top',
+              labels: {
+                usePointStyle: true,
+                boxWidth: 6
+              }
+            },
+            tooltip: {
+              mode: 'index',
+              intersect: false,
+              callbacks: {
+                label: function(context) {
+                  return `${context.dataset.label}: ${context.raw}%`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: {
+                display: false
+              },
+              ticks: {
+                maxRotation: 0,
+                autoSkip: true,
+                maxTicksLimit: 8
+              }
+            },
+            y: {
+              grid: {
+                color: 'rgba(0, 0, 0, 0.05)'
+              },
+              min: 0,
+              max: 100,
+              ticks: {
+                callback: function(value) {
+                  return value + '%';
+                }
+              }
+            }
+          },
+          interaction: {
+            intersect: false,
+            mode: 'index'
+          }
+        }
+      });
+    }
+    
+    // Initialize chart with default values
+    createChart('corn', 'month');
+    
+    // Add event listeners for crop and period selectors
+    document.getElementById('crop-select').addEventListener('change', function() {
+      const crop = this.value;
+      const period = document.getElementById('time-period').value;
+      createChart(crop, period);
+    });
+    
+    document.getElementById('time-period').addEventListener('change', function() {
+      const period = this.value;
+      const crop = document.getElementById('crop-select').value;
+      createChart(crop, period);
+    });
+  }
+  
+  // Initialize crop health chart
+  initCropHealthChart();
+  
+  // Initialize dashboard customization
+  initDashboardCustomization();
+</script>
+{% endblock %}

@@ -1,0 +1,83 @@
+:root {
+    --primary-color: #199c2d;
+    --secondary-color: #f0f7f1;
+    --text-color: #333;
+    --link-color: #1a5c24;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+
+    color: white;
+    text-align: center;
+    padding: 1rem 0;
+}
+#heading{
+    background-image: url('https://ik.imagekit.io/nwagyp5qv/multiple%20plants%20in%20a%20rectangular%20shape%20with%20a%20black%20background.png?updatedAt=1737903847416');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    
+}
+h1 {
+    margin: 0;
+}
+
+main {
+    background-color: var(--secondary-color);
+    padding: 2rem 0;
+}
+
+section {
+    background-color: white;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 0.5rem;
+}
+
+ul {
+    padding-left: 1.5rem;
+}
+
+a {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+
+
+
+@media (max-width: 600px) {
+    .container {
+        padding: 10px;
+    }
+
+    section {
+        padding: 1rem;
+    }
+}

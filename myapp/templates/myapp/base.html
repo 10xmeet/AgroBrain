@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900&display=swap">
+    <title>AgroBrain</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <style>
+        :root {
+            --primary-color: #16a34a;
+            --secondary-color: #064e3b;
+            --accent-color: #10b981;
+            --light-bg: #f0fdf4;
+            --dark-bg: #0f172a;
+            --dark-text: #1e293b;
+            --light-text: #f8fafc;
+            --nav-active: #10b981;
+            --nav-hover: #16a34a;
+            --border-light: rgba(16, 185, 129, 0.2);
+            --border-dark: rgba(16, 185, 129, 0.4);
+            --shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-dark: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.12);
+        }
+        
+        body {
+            font-family: 'Be Vietnam Pro', 'Noto Sans', sans-serif;
+        }
+        
+        * {
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        
+        /* Plant Growth Animation */
+        .plant-growth {
+            position: relative;
+            width: 24px;
+            height: 24px;
+        }
+        
+        .plant-stem {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 2px;
+            height: 12px;
+            background-color: var(--primary-color);
+            transform: translateX(-50%);
+            animation: grow-stem 2s ease-out forwards;
+            transform-origin: bottom center;
+        }
+        
+        .plant-leaf {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-color);
+            border-radius: 50% 0;
+            opacity: 0;
+            transform: scale(0);
+        }
+        
+        .plant-leaf:nth-child(2) {
+            top: 8px;
+            left: 8px;
+            transform: rotate(-45deg) scale(0);
+            animation: grow-leaf 0.5s ease-out 0.5s forwards;
+        }
+        
+        .plant-leaf:nth-child(3) {
+            top: 4px;
+            left: 12px;
+            transform: rotate(0deg) scale(0);
+            animation: grow-leaf 0.5s ease-out 1s forwards;
+        }
+        
+        .plant-leaf:nth-child(4) {
+            top: 8px;
+            right: 8px;
+            transform: rotate(45deg) scale(0);
+            animation: grow-leaf 0.5s ease-out 1.5s forwards;
+        }
+        
+        @keyframes grow-stem {
+            from {
+                height: 0;
+            }
+            to {
+                height: 12px;
+            }
+        }
+        
+        @keyframes grow-leaf {
+            from {
+                opacity: 0;
+                transform: rotate(var(--rotation, 0deg)) scale(0);
+            }
+            to {
+                opacity: 1;
+                transform: rotate(var(--rotation, 0deg)) scale(1);
+            }
+        }
+        
+        /* Page Loading Animation */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--light-bg);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease-out;
+        }
+        
+        .page-transition.loaded {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .page-transition .plant-growth {
+            width: 60px;
+            height: 60px;
+        }
+        
+        .page-transition .plant-stem {
+            width: 4px;
+            height: 30px;
+            animation: grow-stem 1.5s ease-out infinite;
+        }
+        
+        .page-transition .plant-leaf {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .page-transition .plant-leaf:nth-child(2) {
+            top: 20px;
+            left: 20px;
+            animation: grow-leaf 1s ease-out 0.5s infinite;
+        }
+        
+        .page-transition .plant-leaf:nth-child(3) {
+            top: 10px;
+            left: 30px;
+            animation: grow-leaf 1s ease-out 1s infinite;
+        }
+        
+        .page-transition .plant-leaf:nth-child(4) {
+            top: 20px;
+            right: 20px;
+            animation: grow-leaf 1s ease-out 1.5s infinite;
+        }
+        
+        /* Theme Toggle */
+        .theme-toggle {
+            position: relative;
+            width: 48px;
+            height: 24px;
+            border-radius: 12px;
+            background-color: var(--secondary-color);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .theme-toggle::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: white;
+            transition: transform 0.3s ease;
+        }
+        
+        .dark-theme .theme-toggle::after {
+            transform: translateX(24px);
+        }
+        
+        /* Other existing styles */
+        .hamburger {
+            transition: all 0.3s ease-in-out;
+        }
+        .hamburger-line {
+            transition: all 0.3s ease-in-out;
+            transform-origin: center;
+        }
+        .hamburger.active .hamburger-line-top {
+            transform: translateY(4px) rotate(45deg);
+        }
+        .hamburger.active .hamburger-line-middle {
+            opacity: 0;
+        }
+        .hamburger.active .hamburger-line-bottom {
+            transform: translateY(-4px) rotate(-45deg);
+        }
+        .profile-menu {
+            opacity: 0;
+            transform: translateY(-10px);
+            visibility: hidden;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .profile-menu.active {
+            opacity: 1;
+            transform: translateY(0);
+            visibility: visible;
+        }
+        .profile-item:hover {
+            background: rgba(243, 244, 246, 0.5);
+            transform: translateX(4px);
+        }
+        .nav-link {
+            position: relative;
+            padding: 8px 0;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        .nav-link:hover {
+            color: var(--primary-color);
+        }
+        #mobile-menu {
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            transform: translateY(-10px);
+            opacity: 0;
+            pointer-events: none;
+            visibility: hidden;
+        }
+        #mobile-menu.menu-open {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+            visibility: visible;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-light-bg text-dark-text">
+    <!-- Page Loading Animation -->
+    <div class="page-transition" id="page-transition">
+        <div class="plant-growth">
+            <div class="plant-stem"></div>
+            <div class="plant-leaf"></div>
+            <div class="plant-leaf"></div>
+            <div class="plant-leaf"></div>
+        </div>
+    </div>
+    
+    {% if messages %}
+    <div class="messages-container fixed top-20 right-4 z-50">
+        {% for message in messages %}
+        <div class="alert bg-emerald-100 border-l-4 border-emerald-500 text-emerald-700 p-4 mb-4 rounded shadow-md">
+            {{ message }}
+            <button class="float-right text-emerald-700 hover:text-emerald-900" onclick="this.parentElement.remove()">
+                &times;
+            </button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <div class="relative flex size-full min-h-screen flex-col bg-white group/design-root overflow-x-hidden">
+        <div class="layout-container flex h-full grow flex-col">
+            <!-- Include Header Partial -->
+            {% include 'myapp/partials/header.html' %}
+
+            <div class="layout-container pt-16 bg-light-bg transition-all duration-300 dark-theme:bg-dark-bg">
+                <div class="content">
+                    {% block content %}{% endblock content %}
+                </div>
+
+                <!-- Include Footer Partial -->
+                {% include 'myapp/partials/footer.html' %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Page Loading Animation
+            const pageTransition = document.getElementById('page-transition');
+            
+            // Hide loading animation after page loads
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    pageTransition.classList.add('loaded');
+                }, 800); // Delay to ensure animation is visible
+            });
+            
+            // Show loading animation when navigating to a new page
+            document.querySelectorAll('a[href]:not([href^="#"])').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    // Don't show animation for external links or download links
+                    if (link.target === '_blank' || link.hasAttribute('download') || e.ctrlKey || e.metaKey) {
+                        return;
+                    }
+                    
+                    e.preventDefault();
+                    pageTransition.classList.remove('loaded');
+                    
+                    setTimeout(() => {
+                        window.location.href = link.href;
+                    }, 500);
+                });
+            });
+            
+            // Theme Toggle
+            const themeToggle = document.getElementById('theme-toggle');
+            const htmlElement = document.documentElement;
+            
+            // Check for saved theme preference
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                htmlElement.classList.add('dark-theme');
+                document.body.classList.remove('bg-light-bg', 'text-dark-text');
+                document.body.classList.add('bg-dark-bg', 'text-light-text');
+            } else {
+                document.body.classList.add('bg-light-bg', 'text-dark-text');
+            }
+            
+            // Toggle theme when button is clicked
+            if (themeToggle) {
+                themeToggle.addEventListener('click', () => {
+                    // Add transition class to body for smoother theme change
+                    document.body.classList.add('theme-transition');
+                    
+                    // Toggle dark theme class
+                    htmlElement.classList.toggle('dark-theme');
+                    
+                    // Update theme in localStorage and apply appropriate styles
+                    if (htmlElement.classList.contains('dark-theme')) {
+                        localStorage.setItem('theme', 'dark');
+                        document.body.classList.remove('bg-light-bg', 'text-dark-text');
+                        document.body.classList.add('bg-dark-bg', 'text-light-text');
+                        
+                        // Apply transition to all interactive elements
+                        setTimeout(() => {
+                            document.querySelectorAll('a, button, input, select, .nav-link').forEach(el => {
+                                el.classList.add('theme-transitioned');
+                            });
+                        }, 50);
+                    } else {
+                        localStorage.setItem('theme', 'light');
+                        document.body.classList.remove('bg-dark-bg', 'text-light-text');
+                        document.body.classList.add('bg-light-bg', 'text-dark-text');
+                        
+                        // Apply transition to all interactive elements
+                        setTimeout(() => {
+                            document.querySelectorAll('a, button, input, select, .nav-link').forEach(el => {
+                                el.classList.add('theme-transitioned');
+                            });
+                        }, 50);
+                    }
+                    
+                    // Remove transition class after theme change is complete
+                    setTimeout(() => {
+                        document.body.classList.remove('theme-transition');
+                    }, 500);
+                });
+            }
+            
+            // Mobile Menu
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('menu-open');
+                    mobileMenuButton.classList.toggle('active');
+                });
+
+                document.addEventListener('click', (event) => {
+                    if (!event.target.closest('#mobile-menu') && !event.target.closest('#mobile-menu-button')) {
+                        mobileMenu.classList.remove('menu-open');
+                        mobileMenuButton.classList.remove('active');
+                    }
+                });
+
+                document.addEventListener('keydown', (event) => {
+                    if (event.key === 'Escape' && mobileMenu.classList.contains('menu-open')) {
+                        mobileMenu.classList.remove('menu-open');
+                        mobileMenuButton.classList.remove('active');
+                    }
+                });
+            }
+
+            // Profile Dropdown
+            const userMenuButton = document.querySelector('.relative.group');
+            const userMenu = document.getElementById('user-menu');
+            
+            if (userMenuButton && userMenu) {
+                userMenuButton.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    userMenu.classList.toggle('active');
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!e.target.closest('.relative.group') && !e.target.closest('#user-menu')) {
+                        userMenu.classList.remove('active');
+                    }
+                });
+
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && userMenu.classList.contains('active')) {
+                        userMenu.classList.remove('active');
+                    }
+                });
+            }
+            
+            // Staggered animation for content elements
+            const animateElements = document.querySelectorAll('.animate-on-load');
+            if (animateElements.length > 0) {
+                animateElements.forEach((element, index) => {
+                    setTimeout(() => {
+                        element.classList.add('animate-visible');
+                    }, 100 * (index + 1));
+                });
+            }
+        });
+    </script>
+</body>
+</html>

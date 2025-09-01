@@ -1,0 +1,38 @@
+{% extends "myapp/base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Plant Health Analysis</h2>
+
+    {% if report %}
+        <p><strong>Plant Type:</strong> {{ report.PlantType }}</p>
+        <p><strong>Disease Detected:</strong> {{ report.DiseaseDetected }}</p>
+        <p><strong>Solution:</strong> {{ report.Solution }}</p>
+        <p><strong>Confidence Level:</strong> {{ report.ConfidenceLevel }}</p>
+        <p><strong>Precautions:</strong> {{ report.Precautions }}</p>
+        <p><strong>Plant Health:</strong> 
+            <span style="background-color: {% if report.PlantHealth == 'Healthy' %}green{% else %}red{% endif %}; padding: 5px; color: white;">
+                {{ report.PlantHealth }}
+            </span>
+        </p>
+          <!-- DELETE BUTTON -->
+        <form method="POST" action="{% url 'delete_report' report.Timestamp %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Delete This Report</button>
+        </form>
+    {% else %}
+        <p>No disease report found. Please try again.</p>
+    {% endif %}
+
+    <h3>📊 Previous Reports</h3>
+    <ul>
+        {% for record in past_reports %}
+            <li><strong>{{ record.Timestamp }}</strong> - {{ record.PlantType }}: {{ record.DiseaseDetected }} ({{ record.ConfidenceLevel }})</li>
+        {% empty %}
+            <li>No previous reports found.</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'plant_health' %}" class="btn btn-primary">Back to Plant Health</a>
+    <a href="{% url 'dashboard' %}" class="btn btn-primary">Back to Dashboard</a>
+</div>
+{% endblock %}
