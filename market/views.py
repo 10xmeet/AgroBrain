@@ -45,19 +45,19 @@ def market_view(request):
 
     # 🔹 Filtering Logic
     if search_query:
-        data = [item for item in data if search_query in item.get("Commodity", "").lower()]
+        data = [item for item in data if search_query in item.get("commodity", "").lower()]
     
     if search_state:
-        data = [item for item in data if search_state in item.get("State", "").lower()]
+        data = [item for item in data if search_state in item.get("state", "").lower()]
         
     if search_district:
-        data = [item for item in data if search_district in item.get("District", "").lower()]
+        data = [item for item in data if search_district in item.get("district", "").lower()]
     
     # Price range filtering
     if price_filter:
         min_price, max_price = map(int, price_filter.split('-'))
-        data = [item for item in data if item.get("Modal_Price") and 
-                min_price <= float(item.get("Modal_Price", 0)) <= max_price]
+        data = [item for item in data if item.get("modal_price") and 
+                min_price <= float(item.get("modal_price", 0)) <= max_price]
 
     # 🔹 Calculate market statistics
     market_stats = {}
@@ -66,10 +66,10 @@ def market_view(request):
     districts = set()
     
     for item in data:
-        commodity = item.get("Commodity", "")
-        price = float(item.get("Modal_Price", 0))
-        state = item.get("State", "")
-        district = item.get("District", "")
+        commodity = item.get("commodity", "")
+        price = float(item.get("modal_price", 0))
+        state = item.get("state", "")
+        district = item.get("district", "")
         
         # Add to unique sets for dropdown filters
         if commodity:

@@ -326,7 +326,6 @@ def details(request, polygon_id):
     # Get user input for start and end dates
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
-    index_type = request.GET.get('index_type', 'NDVI')  # Default to NDVI if not specified
 
     # Convert dates to Unix timestamp if provided
     if end_date:
@@ -354,69 +353,17 @@ def details(request, polygon_id):
     uv_index_data = uv_index.json()
     uv_index_value = uv_index_data.get('uvi')
     uv_index_date = datetime.utcfromtimestamp(uv_index_data.get('dt')).strftime('%Y-%m-%d %H:%M:%S')
-    
-    # Process vegetation index data
-    ndvi_data = ndvi.json()
-    
-    # Create vegetation index data structure
-    veg_index_data = {
-        'dates': [],
-        'min_values': [],
-        'mean_values': [],
-        'max_values': [],
-        'health_status': 'Unknown',
-        'health_trend': 'Stable'
-    }
-    
-    # Extract data from NDVI response
-    if ndvi_data and isinstance(ndvi_data, list) and len(ndvi_data) > 0:
-        # Extract dates and values
-        veg_index_data['dates'] = [datetime.utcfromtimestamp(entry.get('dt', 0)).strftime('%Y-%m-%d') for entry in ndvi_data]
-        veg_index_data['min_values'] = [entry.get('data', {}).get('min', 0) for entry in ndvi_data]
-        veg_index_data['mean_values'] = [entry.get('data', {}).get('mean', 0) for entry in ndvi_data]
-        veg_index_data['max_values'] = [entry.get('data', {}).get('max', 0) for entry in ndvi_data]
-        
-        # Determine health status based on latest mean value
-        if veg_index_data['mean_values']:
-            latest_value = veg_index_data['mean_values'][-1]
-            if latest_value < 0.2:
-                veg_index_data['health_status'] = 'Poor'
-            elif latest_value < 0.4:
-                veg_index_data['health_status'] = 'Fair'
-            elif latest_value < 0.6:
-                veg_index_data['health_status'] = 'Good'
-            else:
-                veg_index_data['health_status'] = 'Excellent'
-        
-        # Determine health trend by comparing last two values if available
-        if len(veg_index_data['mean_values']) >= 2:
-            last_value = veg_index_data['mean_values'][-1]
-            prev_value = veg_index_data['mean_values'][-2]
-            diff = last_value - prev_value
-            
-            if diff > 0.05:
-                veg_index_data['health_trend'] = 'Improving'
-            elif diff < -0.05:
-                veg_index_data['health_trend'] = 'Declining'
-            else:
-                veg_index_data['health_trend'] = 'Stable'
-    
-    # Available vegetation indices
-    available_indices = ['NDVI', 'EVI', 'SAVI']
 
     return render(request, "myapp/details.html", {
         "api_data_json": result.json(),
-        "ndvi_data_json": ndvi_data,
+        "ndvi_data_json": ndvi.json(),
         "start_date": start_date,
         "end_date": end_date,
         "polygon_id": polygon_id,
         "weather": weather.json(),
         "soil": soil.json(),
         "uv_index_value": uv_index_value,
-        "uv_index_date": uv_index_date,
-        "veg_index_data": veg_index_data,
-        "index_type": index_type,
-        "available_indices": available_indices
+        "uv_index_date": uv_index_date
     })
     
     

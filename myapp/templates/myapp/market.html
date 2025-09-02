@@ -5,102 +5,54 @@
 {% block content %}
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-  tailwind.config = {
-    plugins: [
-      function({ addUtilities }) {
-        const newUtilities = {
-          '.scrollbar-thin': {
-            scrollbarWidth: 'thin',
-            '&::-webkit-scrollbar': {
-              width: '8px',
-              height: '8px',
-            },
-          },
-          '.scrollbar-thumb-blue-500': {
-            '&::-webkit-scrollbar-thumb': {
-              backgroundColor: '#3b82f6',
-              borderRadius: '0.25rem',
-            },
-          },
-          '.scrollbar-track-blue-100': {
-            '&::-webkit-scrollbar-track': {
-              backgroundColor: '#dbeafe',
-              borderRadius: '0.25rem',
-            },
-          },
-        };
-        addUtilities(newUtilities, ['responsive', 'hover']);
-      },
-    ],
-  };
-</script>
 
-<section class="bg-gradient-to-r from-blue-600 to-teal-500 py-16 text-center relative overflow-hidden">
-    <div class="absolute inset-0 bg-pattern opacity-10" style="background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgdmlld0JveD0iMCAwIDYwIDYwIj48cGF0aCBkPSJNMzAgMzBtLTI4IDBhMjggMjggMCAxIDAgNTYgMCAyOCAyOCAwIDEgMC01NiAweiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjIiLz48cGF0aCBkPSJNMzAgMzBtLTE4IDBhMTggMTggMCAxIDAgMzYgMCAxOCAxOCAwIDEgMC0zNiAweiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjIiLz48cGF0aCBkPSJNMzAgMzBtLTggMGE4IDggMCAxIDAgMTYgMCA4IDggMCAxIDAtMTYgMHoiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+PC9zdmc+');"></div>
-    <div class="container mx-auto px-4 relative z-10">
-        <h1 class="text-5xl md:text-6xl font-extrabold text-blue-700 drop-shadow-lg mb-2">
-            🌾 <span class="bg-white/30 px-6 py-4 rounded-lg inline-block transform transition-all hover:scale-105 duration-300 text-blue-800">Live Market Prices</span> 🌿
-        </h1>
-        <p class="text-blue-700 mt-6 text-xl max-w-2xl mx-auto leading-relaxed">
-            Real-time agricultural commodity prices with comprehensive trend analysis and market insights
-        </p>
-        <div class="mt-8 flex flex-wrap justify-center gap-4">
-            <div class="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full font-medium shadow-lg hover:bg-white/30 transition-all duration-300 text-blue-800">
-                <span class="mr-2">🔄</span> Updated daily
-            </div>
-            <div class="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full font-medium shadow-lg hover:bg-white/30 transition-all duration-300 text-blue-800">
-                <span class="mr-2">📊</span> Price trends
-            </div>
-            <div class="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full font-medium shadow-lg hover:bg-white/30 transition-all duration-300 text-blue-800">
-                <span class="mr-2">🔍</span> Advanced filtering
-            </div>
-        </div>
-    </div>
+<section class="bg-gradient-to-r from-emerald-600 to-emerald-800 py-14 text-center">
+    <h1 class="text-5xl font-extrabold text-gray-900 drop-shadow-lg">
+        🌾 <span class="bg-white/30 px-6 py-4 rounded-lg">Live Market Prices</span> 🌿
+    </h1>
+    <p class="text-white mt-4 text-xl">Real-time agricultural commodity prices with trend analysis</p>
 </section>
 
-<main class="bg-gradient-to-b from-white to-blue-50 py-12">
+<main class="bg-emerald-50 py-12">
     <div class="container mx-auto px-6 sm:px-8 lg:px-10">
         <!-- Market Statistics Dashboard -->
         {% if market_stats %}
-        <div class="mb-10 bg-white p-6 rounded-xl shadow-xl border border-blue-100">
-            <h2 class="text-2xl font-bold text-blue-800 mb-4">Market Price Dashboard</h2>
+        <div class="mb-10 bg-white p-6 rounded-xl shadow-xl">
+            <h2 class="text-2xl font-bold text-emerald-800 mb-4">Market Price Dashboard</h2>
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <!-- Price Statistics -->
-                <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
-                    <h3 class="text-xl font-semibold text-blue-700 mb-3">Price Statistics by Commodity</h3>
-                    <div class="overflow-x-auto">
-                        <div class="max-h-80 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-blue-100">
-                            <table class="min-w-full bg-white rounded-lg overflow-hidden">
-                                <thead class="bg-gradient-to-r from-blue-600 to-teal-500 text-blue-800 sticky top-0 z-10">
-                                    <tr>
-                                        <th class="p-3 text-left">Commodity</th>
-                                        <th class="p-3 text-left">Avg Price (₹)</th>
-                                        <th class="p-3 text-left">Min Price (₹)</th>
-                                        <th class="p-3 text-left">Max Price (₹)</th>
-                                        <th class="p-3 text-left">Markets</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-300">
-                                    {% for commodity, stats in market_stats.items %}
-                                    <tr class="hover:bg-blue-50 transition-all">
-                                        <td class="p-3 border font-medium">{{ commodity }}</td>
-                                        <td class="p-3 border font-bold">₹{{ stats.avg_price }}</td>
-                                        <td class="p-3 border text-green-600">₹{{ stats.min_price }}</td>
-                                        <td class="p-3 border text-red-600">₹{{ stats.max_price }}</td>
-                                        <td class="p-3 border">{{ stats.count }}</td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
+                <div class="bg-emerald-50 p-4 rounded-lg">
+                    <h3 class="text-xl font-semibold text-emerald-700 mb-3">Price Statistics by Commodity</h3>
+                    <div class="overflow-x-auto overflow-y-auto h-100"><!-- Added fixed height and vertical scroll -->
+                        <table class="min-w-full bg-white rounded-lg overflow-hidden">
+                            <thead class="bg-emerald-600 text-white">
+                                <tr>
+                                    <th class="p-3 text-left">Commodity</th>
+                                    <th class="p-3 text-left">Avg Price (₹)</th>
+                                    <th class="p-3 text-left">Min Price (₹)</th>
+                                    <th class="p-3 text-left">Max Price (₹)</th>
+                                    <th class="p-3 text-left">Markets</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-300">
+                                {% for commodity, stats in market_stats.items %}
+                                <tr class="hover:bg-emerald-100 transition-all">
+                                    <td class="p-3 border font-medium">{{ commodity }}</td>
+                                    <td class="p-3 border font-bold">₹{{ stats.avg_price }}</td>
+                                    <td class="p-3 border text-green-600">₹{{ stats.min_price }}</td>
+                                    <td class="p-3 border text-red-600">₹{{ stats.max_price }}</td>
+                                    <td class="p-3 border">{{ stats.count }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 
                 <!-- Price Chart -->
-                <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
-                    <h3 class="text-xl font-semibold text-blue-700 mb-3">Price Comparison</h3>
+                <div class="bg-emerald-50 p-4 rounded-lg">
+                    <h3 class="text-xl font-semibold text-emerald-700 mb-3">Price Comparison</h3>
                     <canvas id="priceChart" width="400" height="300"></canvas>
                 </div>
                 
@@ -136,15 +88,15 @@
                                         {
                                             label: 'Avg Price (₹)',
                                             data: avgPrices,
-                                            backgroundColor: 'rgba(37, 99, 235, 0.7)',
-                                            borderColor: 'rgba(37, 99, 235, 1)',
+                                            backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                                            borderColor: 'rgba(16, 185, 129, 1)',
                                             borderWidth: 1
                                         },
                                         {
                                             label: 'Min Price (₹)',
                                             data: minPrices,
-                                            backgroundColor: 'rgba(20, 184, 166, 0.5)',
-                                            borderColor: 'rgba(20, 184, 166, 1)',
+                                            backgroundColor: 'rgba(52, 211, 153, 0.5)',
+                                            borderColor: 'rgba(52, 211, 153, 1)',
                                             borderWidth: 1
                                         },
                                         {
@@ -195,173 +147,87 @@
         {% endif %}
         
         <!-- 🔍 Advanced Search Form -->
-        <form method="get" action="{% url 'market' %}" class="mb-12 bg-white p-8 rounded-xl shadow-xl border border-blue-100">
-            <div class="flex items-center mb-6">
-                <div class="bg-blue-100 p-3 rounded-lg mr-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                </div>
-                <div>
-                    <h2 class="text-2xl font-bold text-blue-800">Advanced Market Search</h2>
-                    <p class="text-gray-500">Filter and sort market data to find exactly what you need</p>
-                </div>
-            </div>
+        <form method="get" action="{% url 'market' %}" class="mb-10 bg-white p-8 rounded-xl shadow-xl">
+            <h2 class="text-2xl font-bold text-emerald-800 mb-4">Advanced Search</h2>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                <div class="group">
-                    <label for="search_query" class="flex items-center text-gray-700 font-semibold mb-2 group-hover:text-blue-700 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                        </svg>
-                        Commodity
-                    </label>
-                    <div class="relative">
-                        <select name="search_query" id="search_query" 
-                            class="w-full px-5 py-3 border-2 border-blue-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all appearance-none bg-white pr-10 group-hover:border-blue-200">
-                            <option value="">All Commodities</option>
-                            {% for commodity in commodities %}
-                                <option value="{{ commodity }}" {% if search_query == commodity.lower %}selected{% endif %}>{{ commodity }}</option>
-                            {% endfor %}
-                        </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-blue-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </div>
-                    </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+                <div>
+                    <label for="search_query" class="block text-gray-700 font-semibold mb-2">🔍 Commodity</label>
+                    <select name="search_query" id="search_query" 
+                        class="w-full px-5 py-3 border-2 border-emerald-500 rounded-lg focus:outline-none focus:ring-4 focus:ring-emerald-300">
+                        <option value="">All Commodities</option>
+                        {% for commodity in commodities %}
+                            <option value="{{ commodity }}" {% if search_query == commodity.lower %}selected{% endif %}>{{ commodity }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
 
-                <div class="group">
-                    <label for="search_state" class="flex items-center text-gray-700 font-semibold mb-2 group-hover:text-blue-700 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                        State
-                    </label>
-                    <div class="relative">
-                        <select name="search_state" id="search_state" 
-                            class="w-full px-5 py-3 border-2 border-blue-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all appearance-none bg-white pr-10 group-hover:border-blue-200">
-                            <option value="">All States</option>
-                            {% for state in states %}
-                                <option value="{{ state }}" {% if search_state == state.lower %}selected{% endif %}>{{ state }}</option>
-                            {% endfor %}
-                        </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-blue-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </div>
-                    </div>
+                <div>
+                    <label for="search_state" class="block text-gray-700 font-semibold mb-2">📍 State</label>
+                    <select name="search_state" id="search_state" 
+                        class="w-full px-5 py-3 border-2 border-emerald-500 rounded-lg focus:outline-none focus:ring-4 focus:ring-emerald-300">
+                        <option value="">All States</option>
+                        {% for state in states %}
+                            <option value="{{ state }}" {% if search_state == state.lower %}selected{% endif %}>{{ state }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 
-                <div class="group">
-                    <label for="search_district" class="flex items-center text-gray-700 font-semibold mb-2 group-hover:text-blue-700 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                        </svg>
-                        District
-                    </label>
-                    <div class="relative">
-                        <select name="search_district" id="search_district" 
-                            class="w-full px-5 py-3 border-2 border-blue-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all appearance-none bg-white pr-10 group-hover:border-blue-200">
-                            <option value="">All Districts</option>
-                            {% for district in districts %}
-                                <option value="{{ district }}" {% if search_district == district.lower %}selected{% endif %}>{{ district }}</option>
-                            {% endfor %}
-                        </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-blue-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </div>
-                    </div>
+                <div>
+                    <label for="search_district" class="block text-gray-700 font-semibold mb-2">🏙️ District</label>
+                    <select name="search_district" id="search_district" 
+                        class="w-full px-5 py-3 border-2 border-emerald-500 rounded-lg focus:outline-none focus:ring-4 focus:ring-emerald-300">
+                        <option value="">All Districts</option>
+                        {% for district in districts %}
+                            <option value="{{ district }}" {% if search_district == district.lower %}selected{% endif %}>{{ district }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                <div class="group">
-                    <label for="price_filter" class="flex items-center text-gray-700 font-semibold mb-2 group-hover:text-blue-700 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        Price Range (₹)
-                    </label>
-                    <div class="relative">
-                        <select name="price_filter" id="price_filter" 
-                            class="w-full px-5 py-3 border-2 border-blue-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all appearance-none bg-white pr-10 group-hover:border-blue-200">
-                            <option value="">All Prices</option>
-                            <option value="0-500" {% if price_filter == '0-500' %}selected{% endif %}>₹0 - ₹500</option>
-                            <option value="500-1000" {% if price_filter == '500-1000' %}selected{% endif %}>₹500 - ₹1,000</option>
-                            <option value="1000-2000" {% if price_filter == '1000-2000' %}selected{% endif %}>₹1,000 - ₹2,000</option>
-                            <option value="2000-5000" {% if price_filter == '2000-5000' %}selected{% endif %}>₹2,000 - ₹5,000</option>
-                            <option value="5000-10000" {% if price_filter == '5000-10000' %}selected{% endif %}>₹5,000 - ₹10,000</option>
-                            <option value="10000-100000" {% if price_filter == '10000-100000' %}selected{% endif %}>₹10,000+</option>
-                        </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-blue-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </div>
-                    </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+                <div>
+                    <label for="price_filter" class="block text-gray-700 font-semibold mb-2">💰 Price Range (₹)</label>
+                    <select name="price_filter" id="price_filter" 
+                        class="w-full px-5 py-3 border-2 border-emerald-500 rounded-lg focus:outline-none focus:ring-4 focus:ring-emerald-300">
+                        <option value="">All Prices</option>
+                        <option value="0-500" {% if price_filter == '0-500' %}selected{% endif %}>₹0 - ₹500</option>
+                        <option value="500-1000" {% if price_filter == '500-1000' %}selected{% endif %}>₹500 - ₹1,000</option>
+                        <option value="1000-2000" {% if price_filter == '1000-2000' %}selected{% endif %}>₹1,000 - ₹2,000</option>
+                        <option value="2000-5000" {% if price_filter == '2000-5000' %}selected{% endif %}>₹2,000 - ₹5,000</option>
+                        <option value="5000-10000" {% if price_filter == '5000-10000' %}selected{% endif %}>₹5,000 - ₹10,000</option>
+                        <option value="10000-100000" {% if price_filter == '10000-100000' %}selected{% endif %}>₹10,000+</option>
+                    </select>
                 </div>
                 
-                <div class="group">
-                    <label for="sort_by" class="flex items-center text-gray-700 font-semibold mb-2 group-hover:text-blue-700 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
-                        </svg>
-                        Sort By
-                    </label>
-                    <div class="relative">
-                        <select name="sort_by" id="sort_by" 
-                            class="w-full px-5 py-3 border-2 border-blue-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all appearance-none bg-white pr-10 group-hover:border-blue-200">
-                            <option value="modal_price" {% if sort_by == 'modal_price' %}selected{% endif %}>Modal Price</option>
-                            <option value="min_price" {% if sort_by == 'min_price' %}selected{% endif %}>Min Price</option>
-                            <option value="max_price" {% if sort_by == 'max_price' %}selected{% endif %}>Max Price</option>
-                            <option value="commodity" {% if sort_by == 'commodity' %}selected{% endif %}>Commodity</option>
-                            <option value="state" {% if sort_by == 'state' %}selected{% endif %}>State</option>
-                            <option value="district" {% if sort_by == 'district' %}selected{% endif %}>District</option>
-                            <option value="market" {% if sort_by == 'market' %}selected{% endif %}>Market</option>
-                        </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-blue-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </div>
-                    </div>
+                <div>
+                    <label for="sort_by" class="block text-gray-700 font-semibold mb-2">🔄 Sort By</label>
+                    <select name="sort_by" id="sort_by" 
+                        class="w-full px-5 py-3 border-2 border-emerald-500 rounded-lg focus:outline-none focus:ring-4 focus:ring-emerald-300">
+                        <option value="Modal_Price" {% if sort_by == 'Modal_Price' %}selected{% endif %}>Modal Price</option>
+                        <option value="Min_Price" {% if sort_by == 'Min_Price' %}selected{% endif %}>Min Price</option>
+                        <option value="Max_Price" {% if sort_by == 'Max_Price' %}selected{% endif %}>Max Price</option>
+                        <option value="Commodity" {% if sort_by == 'Commodity' %}selected{% endif %}>Commodity</option>
+                        <option value="State" {% if sort_by == 'State' %}selected{% endif %}>State</option>
+                        <option value="District" {% if sort_by == 'District' %}selected{% endif %}>District</option>
+                        <option value="Market" {% if sort_by == 'Market' %}selected{% endif %}>Market</option>
+                    </select>
                 </div>
                 
-                <div class="group">
-                    <label for="sort_order" class="flex items-center text-gray-700 font-semibold mb-2 group-hover:text-blue-700 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
-                        </svg>
-                        Sort Order
-                    </label>
-                    <div class="relative">
-                        <select name="sort_order" id="sort_order" 
-                            class="w-full px-5 py-3 border-2 border-blue-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-500 transition-all appearance-none bg-white pr-10 group-hover:border-blue-200">
-                            <option value="desc" {% if sort_order == 'desc' %}selected{% endif %}>Highest First</option>
-                            <option value="asc" {% if sort_order == 'asc' %}selected{% endif %}>Lowest First</option>
-                        </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-blue-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </div>
-                    </div>
+                <div>
+                    <label for="sort_order" class="block text-gray-700 font-semibold mb-2">📊 Sort Order</label>
+                    <select name="sort_order" id="sort_order" 
+                        class="w-full px-5 py-3 border-2 border-emerald-500 rounded-lg focus:outline-none focus:ring-4 focus:ring-emerald-300">
+                        <option value="desc" {% if sort_order == 'desc' %}selected{% endif %}>Highest First</option>
+                        <option value="asc" {% if sort_order == 'asc' %}selected{% endif %}>Lowest First</option>
+                    </select>
                 </div>
             </div>
 
             <div class="flex justify-center">
                 <button type="submit"
-                    class="px-8 py-4 bg-gradient-to-r from-blue-600 to-teal-500 text-black text-lg font-semibold rounded-lg hover:from-blue-700 hover:to-teal-600 transition-all shadow-lg flex items-center transform hover:scale-105 duration-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                    Search Markets
+                    class="px-8 py-4 bg-emerald-600 text-white text-lg font-semibold rounded-lg hover:bg-emerald-700 transition-all shadow-lg">
+                    🔎 Search Markets
                 </button>
             </div>
         </form>
@@ -373,199 +239,75 @@
         {% elif market_data and market_data.paginator.count > 0 %}
         
         <!-- 📊 Market Data Table -->
-        <div class="mt-10">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-3xl font-bold text-blue-800 flex items-center">
-                    <span class="bg-blue-100 p-2 rounded-lg mr-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" />
-                        </svg>
-                    </span>
-                    Market Prices
-                </h2>
-                <div class="text-sm text-gray-500 bg-white px-4 py-2 rounded-lg shadow-sm">
-                    <span class="font-medium">Last updated:</span> {% now "F j, Y" %}
-                </div>
-            </div>
-            
-            <div class="bg-white shadow-xl rounded-xl overflow-hidden border border-blue-100">
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead>
-                            <tr class="bg-gradient-to-r from-blue-600 to-teal-500 text-blue-700">
-                                <th class="px-4 py-4 text-left text-sm font-semibold uppercase tracking-wider">Commodity</th>
-                                <th class="px-4 py-4 text-left text-sm font-semibold uppercase tracking-wider">Variety</th>
-                                <th class="px-4 py-4 text-left text-sm font-semibold uppercase tracking-wider">Market</th>
-                                <th class="px-4 py-4 text-left text-sm font-semibold uppercase tracking-wider">District</th>
-                                <th class="px-4 py-4 text-left text-sm font-semibold uppercase tracking-wider">State</th>
-                                <th class="px-4 py-4 text-left text-sm font-semibold uppercase tracking-wider">Arrival Date</th>
-                                <th class="px-4 py-4 text-left text-sm font-semibold uppercase tracking-wider">Min Price</th>
-                                <th class="px-4 py-4 text-left text-sm font-semibold uppercase tracking-wider">Max Price</th>
-                                <th class="px-4 py-4 text-left text-sm font-semibold uppercase tracking-wider">Modal Price</th>
-                                <th class="px-4 py-4 text-left text-sm font-semibold uppercase tracking-wider">Price Trend</th>
+        <div class="overflow-x-auto mt-6">
+            <h2 class="text-2xl font-bold text-emerald-800 mb-4">Market Prices</h2>
+            <div class="bg-white shadow-md rounded-lg overflow-hidden">
+                <table class="min-w-full">
+                    <thead class="bg-emerald-600 text-white">
+                        <tr>
+                            <th class="p-3 text-left">Commodity</th>
+                            <th class="p-3 text-left">Variety</th>
+                            <th class="p-3 text-left">Market</th>
+                            <th class="p-3 text-left">District</th>
+                            <th class="p-3 text-left">State</th>
+                            <th class="p-3 text-left">Arrival Date</th>
+                            <th class="p-3 text-left">Min Price</th>
+                            <th class="p-3 text-left">Max Price</th>
+                            <th class="p-3 text-left">Modal Price</th>
+                            <th class="p-3 text-left">Price Trend</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-300">
+                        {% if market_data %}
+                            {% for item in market_data %}
+                            <tr class="hover:bg-emerald-100 transition-all even:bg-gray-100">
+                                <td class="p-3 border font-medium">{{ item.commodity }}</td>
+                                <td class="p-3 border">{{ item.variety|default:"Standard" }}</td>
+                                <td class="p-3 border">{{ item.market }}</td>
+                                <td class="p-3 border">{{ item.district }}</td>
+                                <td class="p-3 border">{{ item.state }}</td>
+                                <td class="p-3 border text-blue-600 font-semibold">{{ item.arrival_date }}</td>
+                                <td class="p-3 border text-green-600 font-semibold">₹{{ item.min_price }}</td>
+                                <td class="p-3 border text-red-600 font-semibold">₹{{ item.max_price }}</td>
+                                <td class="p-3 border font-bold bg-emerald-100/60">₹{{ item.modal_price }}</td>
+                                <td class="p-3 border">
+                                    <span class="px-2 py-1 bg-gray-100 text-gray-800 rounded-full text-xs">Market Price</span>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-200 bg-white">
-                            {% if market_data %}
-                                {% for item in market_data %}
-                                <tr class="hover:bg-blue-50 transition-all duration-150 group">
-                                    <td class="px-4 py-4 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            <div class="flex-shrink-0 h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-700 mr-3 group-hover:bg-blue-200 transition-colors">
-                                                {{ item.commodity|slice:":1" }}
-                                            </div>
-                                            <div class="font-medium text-gray-900">{{ item.commodity }}</div>
-                                        </div>
-                                    </td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-gray-700">{{ item.variety|default:"Standard" }}</td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-gray-700">{{ item.market }}</td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-gray-700">{{ item.district }}</td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-gray-700">{{ item.state }}</td>
-                                    <td class="px-4 py-4 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-500 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                            </svg>
-                                            <span class="text-blue-600 font-medium">{{ item.arrival_date }}</span>
-                                        </div>
-                                    </td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-green-600 font-medium">₹{{ item.min_price }}</td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-red-600 font-medium">₹{{ item.max_price }}</td>
-                                    <td class="px-4 py-4 whitespace-nowrap">
-                                        <div class="bg-emerald-50 px-3 py-2 rounded-lg text-emerald-800 font-bold inline-block">
-                                            ₹{{ item.modal_price }}
-                                        </div>
-                                    </td>
-                                    <td class="px-4 py-4 whitespace-nowrap">
-                                        {% if item.trend == 'UP' %}
-                                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
-                                                </svg>
-                                                Increasing
-                                            </span>
-                                        {% elif item.trend == 'DOWN' %}
-                                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                                                </svg>
-                                                Decreasing
-                                            </span>
-                                        {% elif item.trend == 'STABLE' %}
-                                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14" />
-                                                </svg>
-                                                Stable
-                                            </span>
-                                        {% else %}
-                                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
-                                                Unknown
-                                            </span>
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            {% else %}
-                                <tr>
-                                    <td colspan="10" class="px-4 py-8 text-center">
-                                        <div class="flex flex-col items-center justify-center text-gray-500">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            </svg>
-                                            <p class="text-xl font-medium">No Results Found</p>
-                                            <p class="text-gray-400 mt-1">Try adjusting your search filters</p>
-                                        </div>
-                                    </td>
-                                </tr>
-                            {% endif %}
-                        </tbody>
-                    </table>
-                </div>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="10" class="text-center text-red-500 font-semibold p-5">No Results Found</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
             </div>
         </div>
 
         <!-- Pagination Controls -->
-        {% if market_data.has_other_pages %}
-        <div class="flex justify-center mt-10 mb-6">
-            <div class="inline-flex shadow-lg rounded-lg overflow-hidden">
-                {% if market_data.has_previous %}
-                <a href="?page={{ market_data.previous_page_number }}{% if search_query %}&search_query={{ search_query }}{% endif %}{% if search_state %}&search_state={{ search_state }}{% endif %}{% if search_district %}&search_district={{ search_district }}{% endif %}{% if price_filter %}&price_filter={{ price_filter }}{% endif %}{% if sort_by %}&sort_by={{ sort_by }}{% endif %}{% if sort_order %}&sort_order={{ sort_order }}{% endif %}" 
-                   class="bg-white text-blue-700 border-r border-blue-100 px-5 py-3 flex items-center hover:bg-blue-50 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                    </svg>
-                    Previous
-                </a>
-                {% else %}
-                <span class="bg-gray-100 text-gray-400 border-r border-blue-100 px-5 py-3 flex items-center cursor-not-allowed">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                    </svg>
-                    Previous
-                </span>
-                {% endif %}
-                
-                {% for num in market_data.paginator.page_range %}
-                    {% if market_data.number == num %}
-                    <span class="bg-blue-600 text-blue-700 px-5 py-3 font-medium border-r border-blue-500">
-                        {{ num }}
-                    </span>
-                    {% elif num > market_data.number|add:'-3' and num < market_data.number|add:'3' %}
-                    <a href="?page={{ num }}{% if search_query %}&search_query={{ search_query }}{% endif %}{% if search_state %}&search_state={{ search_state }}{% endif %}{% if search_district %}&search_district={{ search_district }}{% endif %}{% if price_filter %}&price_filter={{ price_filter }}{% endif %}{% if sort_by %}&sort_by={{ sort_by }}{% endif %}{% if sort_order %}&sort_order={{ sort_order }}{% endif %}" 
-                       class="bg-white text-blue-700 border-r border-blue-100 px-5 py-3 hover:bg-blue-50 transition-colors">
-                        {{ num }}
-                    </a>
-                    {% endif %}
-                {% endfor %}
-                
-                {% if market_data.has_next %}
-                <a href="?page={{ market_data.next_page_number }}{% if search_query %}&search_query={{ search_query }}{% endif %}{% if search_state %}&search_state={{ search_state }}{% endif %}{% if search_district %}&search_district={{ search_district }}{% endif %}{% if price_filter %}&price_filter={{ price_filter }}{% endif %}{% if sort_by %}&sort_by={{ sort_by }}{% endif %}{% if sort_order %}&sort_order={{ sort_order }}{% endif %}" 
-                   class="bg-white text-blue-700 px-5 py-3 flex items-center hover:bg-blue-50 transition-colors">
-                    Next
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
-                </a>
-                {% else %}
-                <span class="bg-gray-100 text-gray-400 px-5 py-3 flex items-center cursor-not-allowed">
-                    Next
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
-                </span>
-                {% endif %}
-            </div>
+        <div class="flex justify-center mt-6 space-x-3">
+            {% if market_data.has_previous %}
+            <a href="{{ base_url }}{{ market_data.previous_page_number }}"
+                class="px-6 py-3 bg-emerald-600 text-white text-lg rounded-lg hover:bg-emerald-700">
+                ◀ Previous
+            </a>
+            {% endif %}
+
+            <span class="px-4 py-2 bg-gray-200 rounded-lg">
+                Page {{ market_data.number }} of {{ market_data.paginator.num_pages }}
+            </span>
+
+            {% if market_data.has_next %}
+            <a href="{{ base_url }}{{ market_data.next_page_number }}"
+                class="px-6 py-3 bg-emerald-600 text-white text-lg rounded-lg hover:bg-emerald-700">
+                Next ▶
+            </a>
+            {% endif %}
         </div>
-        <div class="text-center text-gray-500 text-sm mb-8">
-            Showing page {{ market_data.number }} of {{ market_data.paginator.num_pages }} ({{ market_data.paginator.count }} total results)
-        </div>
-        {% endif %}
 
         {% else %}
-        <div class="text-center py-12 bg-white rounded-xl shadow-lg border border-blue-100 p-8 max-w-2xl mx-auto">
-            <div class="mb-6">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-blue-400 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-            </div>
-            <h3 class="text-2xl font-bold text-gray-700 mb-2">No Results Found</h3>
-            <p class="text-gray-500 text-lg mb-6">We couldn't find any market data matching your search criteria.</p>
-            <div class="flex flex-wrap justify-center gap-4">
-                <a href="{% url 'market' %}" class="px-6 py-3 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors font-medium flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                    </svg>
-                    Reset Filters
-                </a>
-                <button onclick="window.scrollTo({top: document.querySelector('form').offsetTop - 100, behavior: 'smooth'})" class="px-6 py-3 bg-blue-600 text-blue-600 rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-                    </svg>
-                    Try Different Filters
-                </button>
-            </div>
-        </div>
+        <p class="text-center text-gray-500">No results found. Try a different search.</p>
         {% endif %}
     </div>
 </main>
