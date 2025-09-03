@@ -93,9 +93,31 @@ class ResourceItem(models.Model):
 
 
 from django.db import models
-from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
+
+class VegetationIndex(models.Model):
+    INDEX_TYPE_CHOICES = [
+        ('NDVI', 'Normalized Difference Vegetation Index'),
+        ('EVI', 'Enhanced Vegetation Index'),
+        ('SAVI', 'Soil Adjusted Vegetation Index'),
+    ]
+    
+    polygon = models.ForeignKey(Polygon, on_delete=models.CASCADE, related_name='vegetation_indices')
+    index_type = models.CharField(max_length=10, choices=INDEX_TYPE_CHOICES, default='NDVI')
+    date = models.DateTimeField()
+    min_value = models.FloatField()
+    max_value = models.FloatField()
+    mean_value = models.FloatField()
+    image_url = models.URLField(null=True, blank=True)
+    
+    class Meta:
+        verbose_name = 'Vegetation Index'
+        verbose_name_plural = 'Vegetation Indices'
+        ordering = ['-date']
+    
+    def __str__(self):
+        return f"{self.index_type} for {self.polygon.name} on {self.date.strftime('%Y-%m-%d')}"
 
 class PlantHealthReport(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
