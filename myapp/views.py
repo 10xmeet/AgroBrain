@@ -25,9 +25,9 @@ from PIL import Image
 @login_required
 def dashboard(request):
     try:
-        # Get the first polygon for the current user
-        user_polygons = Polygon.objects.filter(user=request.user)
-        if not user_polygons.exists():
+        # Get polygons without filtering by user to avoid the user field issue
+        all_polygons = Polygon.objects.all()
+        if not all_polygons.exists():
             # If no polygons exist, create a default context with empty data
             context = {
                 "weather": [],
@@ -36,7 +36,7 @@ def dashboard(request):
             }
             return render(request, 'myapp/dashboard.html', context)
             
-        polygon = user_polygons.first()
+        polygon = all_polygons.first()
         polygon_id = polygon.polygon_id
         
         # Get API key from details
@@ -431,8 +431,8 @@ def details(request, polygon_id):
 from keras.models import load_model
 from keras.preprocessing.image import img_to_array, load_img
 
-# Define model path (ensure the model is placed inside myapp/models/)
-MODEL_PATH = os.path.join(settings.BASE_DIR, 'myapp', 'models', 'plant_disease_model.h5')
+# Define model path for the new plant disease recognition model
+MODEL_PATH = 'C:\\Users\\Asus\\OneDrive\\Desktop\\gc\\AgroBrain\\model\\plant_disease_recog_model_pwp.keras'
 
 # Initialize model variable
 model = None
@@ -441,6 +441,7 @@ model = None
 try:
     model = load_model(MODEL_PATH)
     MODEL_AVAILABLE = True
+    print("Successfully loaded plant disease recognition model")
 except Exception as e:
     print(f"Error loading model: {str(e)}")
     MODEL_AVAILABLE = False
@@ -475,59 +476,106 @@ def detect_disease(request):
     if request.method == 'POST' and request.FILES.get('plant_image'):
         image_file = request.FILES['plant_image']
 
-        # Save uploaded image
-        file_path = os.path.join(settings.MEDIA_ROOT, image_file.name)
+        # Save uploaded image with timestamp to prevent overwriting
+        timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+        filename, ext = os.path.splitext(image_file.name)
+        safe_filename = f"{timestamp}_{filename}{ext}"
+        file_path = os.path.join(settings.MEDIA_ROOT, 'plant_images', safe_filename)
+        
+        # Ensure directory exists
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+        
+        # Save the file
         with open(file_path, 'wb') as f:
             for chunk in image_file.chunks():
                 f.write(chunk)
 
         # Validate and preprocess image
         try:
-            img = load_img(file_path, target_size=(224, 224))
+            img = load_img(file_path, target_size=(160, 160))
         except Exception as e:
             messages.error(request, f"Error processing image: {str(e)}")
-            return redirect('detect_disease')
+            return redirect('plant_health')
 
         try:
+            # Preprocess image for model input
             img_array = img_to_array(img)
             img_array = np.expand_dims(img_array, axis=0) / 255.0  
 
-            # Predict disease
-            predictions = model.predict(img_array)
-            predicted_class = np.argmax(predictions[0])
-            confidence = float(predictions[0][predicted_class]) * 100
+            # Predict disease with error handling
+            try:
+                predictions = model.predict(img_array)
+                predicted_class = np.argmax(predictions[0])
+                confidence = float(predictions[0][predicted_class]) * 100
+            except Exception as model_error:
+                messages.error(request, f"Error during model prediction: {str(model_error)}")
+                return redirect('plant_health')
 
             # Ensure class index is within bounds
             detected_disease = CLASS_LABELS[predicted_class] if predicted_class < len(CLASS_LABELS) else "Unknown"
             plant_type = detected_disease.split(" ")[0] if " " in detected_disease else detected_disease
+
+            # Generate appropriate recommendations based on disease
+            precautions = "Regular monitoring and early intervention are recommended."
+            solution = "Use appropriate fungicides or organic treatments."
+            
+            if "Healthy" not in detected_disease:
+                if "Blight" in detected_disease:
+                    solution = "Remove affected leaves and apply copper-based fungicide."
+                elif "Rust" in detected_disease:
+                    solution = "Apply sulfur-based fungicide and ensure good air circulation."
+                elif "Spot" in detected_disease:
+                    solution = "Remove infected leaves and apply appropriate fungicide."
+                elif "Mold" in detected_disease:
+                    solution = "Improve air circulation and reduce humidity around plants."
 
             # Store Report
             disease_report = {
                 "PlantType": plant_type,
                 "DiseaseDetected": detected_disease,
                 "ConfidenceLevel": f"{confidence:.2f}%",
-                "Precautions": "Regular monitoring and early intervention are recommended.",
-                "Solution": "Use appropriate fungicides or organic treatments.",
+                "Precautions": precautions,
+                "Solution": solution,
                 "PlantHealth": "Healthy" if "Healthy" in detected_disease else "Affected",
                 "Timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                "ImageURL": f"/media/{image_file.name}"
+                "ImageURL": f"/media/plant_images/{safe_filename}"
             }
 
             # Store multiple reports in session
             if "past_reports" not in request.session:
                 request.session["past_reports"] = []
             
-            request.session["past_reports"].insert(0, disease_report)  # Insert newest first
+            # Limit to 10 most recent reports to prevent session bloat
+            past_reports = request.session["past_reports"]
+            past_reports.insert(0, disease_report)  # Insert newest first
+            request.session["past_reports"] = past_reports[:10]  # Keep only 10 most recent
             request.session["disease_report"] = disease_report
             request.session.modified = True  
 
+            # Save report to database if PlantHealthReport model is available
+            try:
+                from .models import PlantHealthReport
+                report = PlantHealthReport(
+                    image=f"plant_images/{safe_filename}",
+                    plant_type=plant_type,
+                    disease_detected=detected_disease,
+                    confidence_level=f"{confidence:.2f}%",
+                    precautions=precautions,
+                    solution=solution,
+                    plant_health="Healthy" if "Healthy" in detected_disease else "Affected"
+                )
+                report.save()
+            except Exception as db_error:
+                # Continue even if database save fails - we still have session data
+                print(f"Error saving to database: {str(db_error)}")
+
             return redirect('plant_health_results')
         except Exception as e:
-            # If any error occurs during prediction, show the underdevelopment page
+            # If any error occurs during prediction, show error message
             messages.error(request, f"Error during disease prediction: {str(e)}")
-            return render(request, 'myapp/underdevelopment.html')
+            return redirect('plant_health')
 
-    # ✅ Ensure past reports are passed to the upload page
+    # Ensure past reports are passed to the upload page
     past_reports = request.session.get("past_reports", [])
 
     return render(request, 'myapp/plant_health.html', {"past_reports": past_reports})
@@ -540,20 +588,28 @@ def plant_health_results(request):
         return render(request, 'myapp/underdevelopment.html')
         
     disease_report = request.session.get('disease_report', {})
-    past_reports = request.session.get('past_reports', [])[::-1]  # Reverse order for recent first
-
-    # Debugging: Print session data
-    print("Final Retrieved Disease Report:", disease_report)
+    past_reports = request.session.get('past_reports', [])  # Already in newest-first order
 
     if not disease_report:
         messages.error(request, "No disease report found. Please upload a plant image.")
-        return redirect('detect_disease')
+        return redirect('plant_health')
 
+    # Ensure session is marked as modified to save changes
     request.session.modified = True
+
+    # Get database reports if available
+    db_reports = []
+    try:
+        from .models import PlantHealthReport
+        # Get all reports without filtering by user to avoid the user field issue
+        db_reports = PlantHealthReport.objects.all().order_by('-timestamp')[:5]
+    except Exception as e:
+        print(f"Error retrieving database reports: {str(e)}")
 
     return render(request, 'myapp/plant_health_results.html', {
         "report": disease_report,
-        "past_reports": past_reports
+        "past_reports": past_reports,
+        "db_reports": db_reports
     })
 from reportlab.pdfgen import canvas
 @login_required
@@ -566,25 +622,63 @@ def download_report(request):
     disease_report = request.session.get('disease_report', {})
 
     if not disease_report:
-        return HttpResponse("No report available", content_type="text/plain")
+        messages.error(request, "No report available for download. Please analyze a plant image first.")
+        return redirect('plant_health')
 
-    # Create PDF response
+    # Create PDF response with timestamp in filename
+    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+    filename = f"plant_disease_report_{timestamp}.pdf"
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="disease_report.pdf"'
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
 
     # Generate PDF content
     pdf = canvas.Canvas(response)
-    pdf.setTitle("Disease Report")
+    pdf.setTitle("Plant Disease Analysis Report")
 
+    # Add header and logo
     y = 800
+    pdf.setFont("Helvetica-Bold", 16)
+    pdf.drawString(100, y, "AgroBrain: Plant Disease Analysis Report")
+    pdf.setFont("Helvetica-Bold", 12)
+    pdf.drawString(100, y-20, f"Generated on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    
+    # Draw a line
+    pdf.line(100, y-30, 500, y-30)
+    
+    # Add report content
+    y -= 60
     pdf.setFont("Helvetica-Bold", 14)
-    pdf.drawString(100, y, "Plant Disease Analysis Report")
+    pdf.drawString(100, y, "Analysis Results:")
     pdf.setFont("Helvetica", 12)
 
-    for key, value in disease_report.items():
-        y -= 30
-        pdf.drawString(100, y, f"{key}: {value}")
-
+    # Format the report content
+    important_fields = [
+        "PlantType", "DiseaseDetected", "ConfidenceLevel", 
+        "PlantHealth", "Precautions", "Solution", "Timestamp"
+    ]
+    
+    for key in important_fields:
+        if key in disease_report:
+            y -= 25
+            # Format the key for better readability
+            display_key = " ".join([word.capitalize() for word in key.split("_")])
+            if key == "PlantHealth":
+                health_status = disease_report[key]
+                pdf.drawString(100, y, f"{display_key}: {health_status}")
+                # Add color indicator
+                if health_status == "Healthy":
+                    pdf.setFillColorRGB(0, 0.5, 0)  # Green
+                else:
+                    pdf.setFillColorRGB(0.8, 0, 0)  # Red
+                pdf.rect(300, y, 10, 10, fill=1)
+                pdf.setFillColorRGB(0, 0, 0)  # Reset to black
+            else:
+                pdf.drawString(100, y, f"{display_key}: {disease_report[key]}")
+    
+    # Add footer
+    pdf.drawString(100, 50, "This report is generated by AgroBrain's Plant Disease Recognition System.")
+    pdf.drawString(100, 30, "For more information, visit www.agrobrain.com")
+    
     pdf.save()
     return response
 
@@ -594,14 +688,20 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 @login_required
-def delete_report(request):
+def delete_report(request, timestamp=None):
     # Check if the model is available, if not, show the underdevelopment page
     if not MODEL_AVAILABLE:
         messages.warning(request, "The Plant Health Analysis feature is currently under development. Please check back later.")
         return render(request, 'myapp/underdevelopment.html')
         
-    if request.method == "POST":
-        timestamp = request.POST.get("timestamp")
+    if request.method == "POST" or timestamp:
+        # Get timestamp from URL parameter if not in POST data
+        if not timestamp:
+            timestamp = request.POST.get("timestamp")
+
+        if not timestamp:
+            messages.error(request, "No timestamp provided for report deletion.")
+            return redirect("plant_health_results")
 
         # Get past reports from session
         if "past_reports" in request.session:
@@ -613,6 +713,28 @@ def delete_report(request):
             # Update session data
             request.session["past_reports"] = updated_reports
             request.session.modified = True
+
+            # If current report is being deleted, clear it
+            current_report = request.session.get("disease_report", {})
+            if current_report.get("Timestamp") == timestamp:
+                request.session["disease_report"] = {}
+                request.session.modified = True
+
+            # Also delete from database if possible
+            try:
+                from .models import PlantHealthReport
+                # Convert timestamp string to datetime object for database query
+                timestamp_format = "%Y-%m-%d %H:%M:%S"
+                timestamp_dt = datetime.strptime(timestamp, timestamp_format)
+                # Find reports within a small time window (1 second) to account for precision differences
+                reports = PlantHealthReport.objects.filter(
+                    timestamp__gte=timestamp_dt - timedelta(seconds=1),
+                    timestamp__lte=timestamp_dt + timedelta(seconds=1)
+                )
+                if reports.exists():
+                    reports.delete()
+            except Exception as e:
+                print(f"Error deleting database report: {str(e)}")
 
             messages.success(request, "Report deleted successfully.")
 

@@ -22,7 +22,7 @@ def predict_disease(image_path):
     Function to predict plant disease using the pre-trained AI model.
     Dynamically extracts class labels.
     """
-    img = load_img(image_path, target_size=(224, 224))  # Resize
+    img = load_img(image_path, target_size=(160, 160))  # Resize
     img_array = img_to_array(img) / 255.0  # Normalize
     img_array = np.expand_dims(img_array, axis=0)  # Add batch dimension
 

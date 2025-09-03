@@ -4,20 +4,26 @@
 
 {% block content %}
 <div class="container text-center mt-5">
-    <h2>🌾 AI Prediction Result</h2>
-    <img src="{{ file_url }}" width="300px" class="img-thumbnail">
-    
-    <p><strong>🩺 Disease Detected:</strong> <span style="color: {% if 'Healthy' in result %}green{% else %}red{% endif %};">
-        {{ result }}</span></p>
-    
-    <p><strong>📊 Confidence:</strong> {{ confidence }}%</p>
+    <h2 class="text-3xl font-bold text-green-600 mb-4">🌾 AI Prediction Result</h2>
+    <img src="{{ file_url }}" class="img-thumbnail rounded-lg shadow-md mb-4" style="width: 300px;">
+
+    <p class="text-lg font-semibold">
+        <strong>🩺 Disease Detected:</strong> 
+        <span class="px-2 py-1 rounded-md text-white" style="background-color: {% if 'Healthy' in result %}green{% else %}red{% endif %};">
+            {{ result }}
+        </span>
+    </p>
+
+    <p class="text-lg font-semibold">
+        <strong>📊 Confidence:</strong> {{ confidence }}%
+    </p>
 
     {% if "Healthy" in result %}
-        <p class="text-success">✅ The plant is healthy. No action needed!</p>
+        <p class="text-green-600 font-medium">✅ The plant is healthy. No action needed!</p>
     {% else %}
-        <p class="text-danger">🚨 The plant has a disease. Consider treatment.</p>
+        <p class="text-red-600 font-medium">🚨 The plant has a disease. Consider treatment.</p>
     {% endif %}
 
-    <a href="{% url 'plant_disease_detection' %}" class="btn btn-primary">🔄 Analyze Another Image</a>
+    <a href="{% url 'plant_disease_detection' %}" class="btn btn-primary mt-4">🔄 Analyze Another Image</a>
 </div>
 {% endblock %}

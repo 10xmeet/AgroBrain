@@ -33,11 +33,11 @@ urlpatterns = [
     path('details/<str:polygon_id>/', views.details, name='details'),
     
     # Additional features
-     path("detect/", views.detect_disease, name="detect"),
     path('news/', views.news, name='news'),
     path("plant-health/", views.detect_disease, name="plant_health"),
-    path("plant-health/", views.detect_disease, name="plant_disease_detection"),
+    path("plant-health/detect/", views.detect_disease, name="plant_disease_detection"),
     path('plant-health/results/', views.plant_health_results, name='plant_health_results'),
-    path('plant-health/download/', views.download_report, name='download_report'),
-    path("plant-health/results/delete/<str:timestamp>/", views.delete_report, name="delete_report"),
+    path('plant-health/download/', views.download_report, name='download_pdf'),
+    path("plant-health/results/delete/", views.delete_report, name="delete_report"),
+    path("plant-health/results/delete/<str:timestamp>/", views.delete_report, name="delete_report_with_timestamp"),
 ]

@@ -3,25 +3,21 @@
 {% block title %}Plant Disease Detection{% endblock %}
 
 {% block content %}
-<div class="container text-center mt-5">
-    <h2>🌿 Upload a Plant Image for Analysis</h2>
-    <p>Our AI will analyze the plant and detect any diseases.</p>
+<div class="container mx-auto mt-10">
+    <h2 class="text-3xl font-bold text-green-600 mb-6 text-center">🌱 Upload Image for Disease Detection</h2>
 
-    <form action="" method="post" enctype="multipart/form-data" id="upload-form">
+    <form method="POST" enctype="multipart/form-data" action="{% url 'plant_disease_detection' %}" class="bg-white shadow-md rounded-lg p-6">
         {% csrf_token %}
-        <input type="file" name="plant_image" id="plant_image" required>
-        <button type="submit" id="analyze-btn">🔍 Analyze</button>
+        <div class="mb-4">
+            <label for="image" class="block text-lg font-medium text-gray-700">Select Image:</label>
+            <input type="file" name="image" id="image" class="mt-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500">
+        </div>
+
+        <button type="submit" class="btn btn-primary w-full">🔍 Detect Disease</button>
     </form>
 
-    <div id="loading" style="display: none;">
-        <p>⏳ Analyzing... Please wait.</p>
+    <div class="mt-6 text-center">
+        <a href="{% url 'dashboard' %}" class="btn btn-success">Back to Dashboard</a>
     </div>
 </div>
-
-<script>
-    document.getElementById("upload-form").addEventListener("submit", function() {
-        document.getElementById("loading").style.display = "block";
-        document.getElementById("analyze-btn").style.display = "none";
-    });
-</script>
 {% endblock %}

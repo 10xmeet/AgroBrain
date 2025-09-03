@@ -2,37 +2,48 @@
 
 {% block content %}
 <div class="container">
-    <h2>Plant Health Analysis</h2>
+    <h2 class="text-3xl font-bold text-green-600 mb-4">Plant Health Analysis</h2>
 
     {% if report %}
-        <p><strong>Plant Type:</strong> {{ report.PlantType }}</p>
-        <p><strong>Disease Detected:</strong> {{ report.DiseaseDetected }}</p>
-        <p><strong>Solution:</strong> {{ report.Solution }}</p>
-        <p><strong>Confidence Level:</strong> {{ report.ConfidenceLevel }}</p>
-        <p><strong>Precautions:</strong> {{ report.Precautions }}</p>
-        <p><strong>Plant Health:</strong> 
-            <span style="background-color: {% if report.PlantHealth == 'Healthy' %}green{% else %}red{% endif %}; padding: 5px; color: white;">
-                {{ report.PlantHealth }}
-            </span>
-        </p>
-          <!-- DELETE BUTTON -->
-        <form method="POST" action="{% url 'delete_report' report.Timestamp %}">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-danger">Delete This Report</button>
-        </form>
+        <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+            <p class="text-lg"><strong>Plant Type:</strong> {{ report.PlantType }}</p>
+            <p class="text-lg"><strong>Disease Detected:</strong> {{ report.DiseaseDetected }}</p>
+            <p class="text-lg"><strong>Solution:</strong> {{ report.Solution }}</p>
+            <p class="text-lg"><strong>Confidence Level:</strong> {{ report.ConfidenceLevel }}</p>
+            <p class="text-lg"><strong>Precautions:</strong> {{ report.Precautions }}</p>
+            <p class="text-lg"><strong>Plant Health:</strong> 
+                <span class="px-2 py-1 rounded-md text-white" style="background-color: {% if report.PlantHealth == 'Healthy' %}green{% else %}red{% endif %};">
+                    {{ report.PlantHealth }}
+                </span>
+            </p>
+
+            <div class="action-buttons mt-4">
+                <form method="POST" action="{% url 'delete_report_with_timestamp' report.Timestamp %}" class="inline-block">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete This Report</button>
+                </form>
+                <form method="POST" action="{% url 'download_pdf' %}" class="inline-block ml-2">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">Download PDF Report</button>
+                </form>
+            </div>
+        </div>
     {% else %}
-        <p>No disease report found. Please try again.</p>
+        <p class="text-gray-600">No disease report found. Please try again.</p>
     {% endif %}
 
-    <h3>📊 Previous Reports</h3>
-    <ul>
+    <h3 class="text-2xl font-semibold text-green-600 mt-8">📊 Previous Reports</h3>
+    <ul class="list-disc pl-6 mt-4">
         {% for record in past_reports %}
             <li><strong>{{ record.Timestamp }}</strong> - {{ record.PlantType }}: {{ record.DiseaseDetected }} ({{ record.ConfidenceLevel }})</li>
         {% empty %}
-            <li>No previous reports found.</li>
+            <li class="text-gray-600">No previous reports found.</li>
         {% endfor %}
     </ul>
-    <a href="{% url 'plant_health' %}" class="btn btn-primary">Back to Plant Health</a>
-    <a href="{% url 'dashboard' %}" class="btn btn-primary">Back to Dashboard</a>
+
+    <div class="mt-6">
+        <a href="{% url 'plant_health' %}" class="btn btn-success">Back to Plant Health</a>
+        <a href="{% url 'dashboard' %}" class="btn btn-primary">Back to Dashboard</a>
+    </div>
 </div>
 {% endblock %}
