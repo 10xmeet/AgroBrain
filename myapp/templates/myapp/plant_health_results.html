@@ -1,49 +1,99 @@
 {% extends "myapp/base.html" %}
 
 {% block content %}
-<div class="container">
-    <h2 class="text-3xl font-bold text-green-600 mb-4">Plant Health Analysis</h2>
+<div class="container mx-auto mt-12 px-4">
+
+    <!-- Page Title -->
+    <h2 class="text-5xl font-extrabold text-center bg-gradient-to-r from-green-600 via-emerald-500 to-lime-500 bg-clip-text text-transparent drop-shadow-lg mb-10">
+        🌱 Plant Health Analysis
+    </h2>
 
     {% if report %}
-        <div class="bg-white shadow-md rounded-lg p-6 mb-6">
-            <p class="text-lg"><strong>Plant Type:</strong> {{ report.PlantType }}</p>
-            <p class="text-lg"><strong>Disease Detected:</strong> {{ report.DiseaseDetected }}</p>
-            <p class="text-lg"><strong>Solution:</strong> {{ report.Solution }}</p>
-            <p class="text-lg"><strong>Confidence Level:</strong> {{ report.ConfidenceLevel }}</p>
-            <p class="text-lg"><strong>Precautions:</strong> {{ report.Precautions }}</p>
-            <p class="text-lg"><strong>Plant Health:</strong> 
-                <span class="px-2 py-1 rounded-md text-white" style="background-color: {% if report.PlantHealth == 'Healthy' %}green{% else %}red{% endif %};">
+        <!-- Report Card -->
+        <div class="bg-white/80 backdrop-blur-lg border border-green-200 shadow-xl rounded-2xl p-8 max-w-3xl mx-auto hover:shadow-2xl transition duration-300">
+
+            <!-- Report Image -->
+            {% if report.ImageURL %}
+                <div class="flex justify-center mb-6">
+                    <img src="{{ report.ImageURL }}" alt="Plant Image"
+                         class="w-72 h-72 object-cover rounded-xl shadow-md border border-green-100">
+                </div>
+            {% endif %}
+
+            <!-- Report Details -->
+            <p class="text-lg text-gray-800 mb-2"><strong>🌿 Plant Type:</strong> {{ report.PlantType }}</p>
+            <p class="text-lg text-gray-800 mb-2"><strong>🦠 Disease Detected:</strong> {{ report.DiseaseDetected }}</p>
+            <p class="text-lg text-gray-800 mb-2"><strong>💡 Solution:</strong> {{ report.Solution }}</p>
+            <p class="text-lg text-gray-800 mb-2"><strong>📈 Confidence Level:</strong> {{ report.ConfidenceLevel }}</p>
+            <p class="text-lg text-gray-800 mb-2"><strong>⚠️ Precautions:</strong> {{ report.Precautions }}</p>
+
+            <p class="text-lg text-gray-800 mt-4">
+                <strong>🌱 Plant Health:</strong>
+                <span class="px-4 py-2 rounded-xl text-white font-semibold shadow-md inline-block animate-pulse
+                    {% if report.PlantHealth == 'Healthy' %}
+                        bg-green-600
+                    {% else %}
+                        bg-red-600
+                    {% endif %}">
                     {{ report.PlantHealth }}
                 </span>
             </p>
 
-            <div class="action-buttons mt-4">
-                <form method="POST" action="{% url 'delete_report_with_timestamp' report.Timestamp %}" class="inline-block">
+            <!-- Action Buttons -->
+            <div class="mt-8 flex flex-wrap gap-4 justify-center">
+                <form method="POST" action="{% url 'delete_report_with_timestamp' report.Timestamp %}">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-danger">Delete This Report</button>
+                    <button type="submit"
+                            class="bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-6 rounded-xl font-semibold hover:from-red-700 hover:to-red-800 transform hover:scale-105 transition duration-300 shadow-md">
+                        🗑 Delete Report
+                    </button>
                 </form>
-                <form method="POST" action="{% url 'download_pdf' %}" class="inline-block ml-2">
+
+                <form method="POST" action="{% url 'download_pdf' %}">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-primary">Download PDF Report</button>
+                    <button type="submit"
+                            class="bg-gradient-to-r from-green-600 to-emerald-600 text-white py-2 px-6 rounded-xl font-semibold hover:from-green-700 hover:to-emerald-700 transform hover:scale-105 transition duration-300 shadow-md">
+                        ⬇ Download PDF
+                    </button>
                 </form>
             </div>
         </div>
     {% else %}
-        <p class="text-gray-600">No disease report found. Please try again.</p>
+        <p class="text-center text-gray-600 italic">No disease report found. Please try again.</p>
     {% endif %}
 
-    <h3 class="text-2xl font-semibold text-green-600 mt-8">📊 Previous Reports</h3>
-    <ul class="list-disc pl-6 mt-4">
-        {% for record in past_reports %}
-            <li><strong>{{ record.Timestamp }}</strong> - {{ record.PlantType }}: {{ record.DiseaseDetected }} ({{ record.ConfidenceLevel }})</li>
-        {% empty %}
-            <li class="text-gray-600">No previous reports found.</li>
-        {% endfor %}
-    </ul>
-
-    <div class="mt-6">
-        <a href="{% url 'plant_health' %}" class="btn btn-success">Back to Plant Health</a>
-        <a href="{% url 'dashboard' %}" class="btn btn-primary">Back to Dashboard</a>
+    <!-- Previous Reports -->
+    <h3 class="text-3xl font-bold text-green-700 mt-16 text-center">📊 Previous Reports</h3>
+    <div class="mt-6 max-w-3xl mx-auto bg-white/70 backdrop-blur-lg rounded-2xl p-6 shadow-md">
+        <ul class="space-y-4 text-gray-800">
+            {% for record in past_reports %}
+                <li class="flex items-center gap-4 border-l-4 border-green-400 pl-3">
+                    {% if record.ImageURL %}
+                        <img src="{{ record.ImageURL }}" alt="Past Report Plant" class="w-16 h-16 object-cover rounded-lg shadow">
+                    {% endif %}
+                    <div>
+                        <span class="font-semibold text-emerald-600">{{ record.Timestamp }}</span><br>
+                        <span class="font-medium">{{ record.PlantType }}</span>: {{ record.DiseaseDetected }}
+                        <span class="text-gray-500">({{ record.ConfidenceLevel }})</span>
+                    </div>
+                </li>
+            {% empty %}
+                <li class="text-gray-600 italic">No previous reports found.</li>
+            {% endfor %}
+        </ul>
     </div>
+
+    <!-- Navigation Buttons -->
+    <div class="mt-10 flex justify-center gap-6">
+        <a href="{% url 'plant_health' %}"
+           class="bg-gradient-to-r from-emerald-500 to-green-600 text-white py-2 px-6 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-700 transform hover:scale-105 transition duration-300 shadow-md">
+            ⬅ Back to Plant Health
+        </a>
+        <a href="{% url 'dashboard' %}"
+           class="bg-gradient-to-r from-indigo-500 to-blue-600 text-white py-2 px-6 rounded-xl font-semibold hover:from-indigo-600 hover:to-blue-700 transform hover:scale-105 transition duration-300 shadow-md">
+            🏠 Back to Dashboard
+        </a>
+    </div>
+
 </div>
 {% endblock %}

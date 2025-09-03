@@ -1,67 +1,78 @@
 {% extends 'myapp/base.html' %}
 
 {% block content %}
-<div class="container">
-    <h2 class="text-3xl font-bold text-green-600 mb-4">🌿 Plant Health Analysis 🌱</h2>
+<div class="container mx-auto mt-10 px-4">
 
-    {% if report %}
-        <div class="bg-white shadow-md rounded-lg p-6 mb-6">
-            <p class="text-lg"><strong>Plant Type:</strong> {{ report.PlantType }}</p>
-            <p class="text-lg"><strong>Disease Detected:</strong> {{ report.DiseaseDetected }}</p>
-            <p class="text-lg"><strong>Confidence Level:</strong> {{ report.ConfidenceLevel }}</p>
-            <p class="text-lg"><strong>Health Status:</strong> {{ report.PlantHealth }}</p>
-            <p class="text-lg"><strong>Precautions:</strong> {{ report.Precautions }}</p>
-            <p class="text-lg"><strong>Solution:</strong> {{ report.Solution }}</p>
+    <!-- Hero Section -->
+    <div class="text-center mb-12">
+        <h2 class="text-5xl font-extrabold bg-gradient-to-r from-green-600 via-emerald-500 to-lime-500 bg-clip-text text-transparent drop-shadow-lg">
+            🌱 Plant Health Analysis
+        </h2>
+        <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+            Upload an image of your plant to detect possible diseases and receive instant AI-powered insights.
+        </p>
+    </div>
 
-            <div class="progress bg-gray-200 rounded-full h-4 overflow-hidden">
-                <div class="progress-bar bg-green-500 h-full" style="width: {% if report.PlantHealth == 'Healthy' %}100{% else %}50{% endif %}%;"></div>
-            </div>
-
-            <form action="{% url 'download_pdf' %}" method="post" class="mt-4">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-primary">Download Report 📄</button>
-            </form>
-        </div>
-    {% else %}
-        <p class="text-gray-600">No analysis yet. Upload an image to get started! 📸</p>
-    {% endif %}
-
-    <form action="{% url 'plant_disease_detection' %}" method="post" enctype="multipart/form-data" class="bg-gray-100 p-6 rounded-lg shadow-md">
+    <!-- Upload Form -->
+    <form action="{% url 'plant_disease_detection' %}" method="post" enctype="multipart/form-data"
+          class="bg-white/80 backdrop-blur-lg border border-green-200 p-8 rounded-2xl shadow-xl max-w-2xl mx-auto">
         {% csrf_token %}
-        <label for="plant_image" class="block text-lg font-medium text-gray-700">Select a plant image for disease analysis:</label>
-        <input type="file" id="plant_image" name="plant_image" accept="image/*" required class="mt-2 mb-4">
-        <button type="submit" class="btn btn-success">Analyze Plant</button>
+        <label for="plant_image" class="block text-lg font-semibold text-gray-800 mb-3">
+            Select a plant image for disease analysis:
+        </label>
+        <input type="file" id="plant_image" name="plant_image" accept="image/*" required
+               class="block w-full border border-gray-300 rounded-lg shadow-sm p-2 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition">
+
+        <button type="submit"
+                class="mt-6 w-full bg-gradient-to-r from-green-600 to-lime-600 text-white py-3 px-4 rounded-xl font-semibold hover:from-green-700 hover:to-lime-700 transform hover:scale-105 transition duration-300">
+            🔍 Analyze Plant
+        </button>
     </form>
 
-    <h3 class="text-2xl font-semibold text-green-600 mt-8">📊 Previous Reports</h3>
+    <!-- Previous Reports -->
+    <h3 class="text-3xl font-bold text-green-700 mt-16 text-center">📊 Previous Reports</h3>
     {% if past_reports %}
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
             {% for report in past_reports %}
-                <div class="card bg-white shadow-md rounded-lg p-4">
+                <div class="bg-white/80 backdrop-blur-xl border border-green-100 shadow-lg rounded-2xl p-6 hover:shadow-2xl hover:scale-[1.02] transition duration-300">
                     {% if report.ImageURL %}
-                        <img src="{{ report.ImageURL }}" alt="Plant Image" class="w-full h-32 object-cover rounded-md">
+                        <img src="{{ report.ImageURL }}" alt="Plant Image"
+                             class="w-full h-48 object-cover rounded-xl mb-4 shadow-md">
                     {% else %}
-                        <p class="text-gray-500">No Image Available</p>
+                        <p class="text-gray-500 italic">No Image Available</p>
                     {% endif %}
-                    <p><strong>Plant Type:</strong> {{ report.PlantType }}</p>
-                    <p><strong>Disease Detected:</strong> {{ report.DiseaseDetected }}</p>
-                    <p><strong>Solution:</strong> {{ report.Solution }}</p>
-                    <p><strong>Confidence Level:</strong> {{ report.ConfidenceLevel }}</p>
-                    <p><strong>Precautions:</strong> {{ report.Precautions }}</p>
-                    <p><strong>Plant Health:</strong> 
-                        <span class="px-2 py-1 rounded-md text-white" style="background-color: {% if report.PlantHealth == 'Healthy' %}green{% else %}red{% endif %};">
-                            {{ report.PlantHealth }}
-                        </span>
-                    </p>
-                    <form method="POST" action="{% url 'delete_report' report.Timestamp %}" class="mt-2">
+
+                    <div class="space-y-2">
+                        <p class="text-gray-800"><span class="font-bold">🌿 Plant Type:</span> {{ report.PlantType }}</p>
+                        <p class="text-gray-800"><span class="font-bold">🦠 Disease Detected:</span> {{ report.DiseaseDetected }}</p>
+                        <p class="text-gray-800"><span class="font-bold">💡 Solution:</span> {{ report.Solution }}</p>
+                        <p class="text-gray-800"><span class="font-bold">📈 Confidence Level:</span> {{ report.ConfidenceLevel }}</p>
+                        <p class="text-gray-800"><span class="font-bold">⚠️ Precautions:</span> {{ report.Precautions }}</p>
+                        <p class="text-gray-800"><span class="font-bold">🌱 Plant Health:</span>
+                            <span class="px-3 py-1 rounded-lg text-white font-semibold shadow-sm
+                                {% if report.PlantHealth == 'Healthy' %}
+                                    bg-green-600
+                                {% else %}
+                                    bg-red-600
+                                {% endif %}">
+                                {{ report.PlantHealth }}
+                            </span>
+                        </p>
+                    </div>
+
+                    <!-- Delete Button -->
+                    <form method="POST" action="{% url 'delete_report_with_timestamp' report.Timestamp %}" class="mt-6">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <button type="submit"
+                                class="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-4 rounded-xl font-semibold hover:from-red-700 hover:to-red-800 transform hover:scale-105 transition duration-300">
+                            🗑 Delete Report
+                        </button>
                     </form>
                 </div>
             {% endfor %}
         </div>
     {% else %}
-        <p class="text-gray-600">No previous reports available.</p>
+        <p class="text-gray-600 mt-6 text-center italic">No previous reports available.</p>
     {% endif %}
 </div>
 {% endblock %}

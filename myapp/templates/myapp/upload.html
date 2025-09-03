@@ -1,23 +1,46 @@
 {% extends 'myapp/base.html' %}
 
-{% block title %}Plant Disease Detection{% endblock %}
+{% block title %}🌱 Plant Disease Detection{% endblock %}
 
 {% block content %}
-<div class="container mx-auto mt-10">
-    <h2 class="text-3xl font-bold text-green-600 mb-6 text-center">🌱 Upload Image for Disease Detection</h2>
+<div class="container mx-auto mt-12 px-4">
 
-    <form method="POST" enctype="multipart/form-data" action="{% url 'plant_disease_detection' %}" class="bg-white shadow-md rounded-lg p-6">
+    <!-- Hero Section -->
+    <div class="text-center mb-12">
+        <h2 class="text-5xl font-extrabold bg-gradient-to-r from-green-600 via-emerald-500 to-lime-500 bg-clip-text text-transparent drop-shadow-lg">
+            🌱 Upload Image for Disease Detection
+        </h2>
+        <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+            Upload a plant image and get instant AI-powered disease detection with confidence levels and solutions.
+        </p>
+    </div>
+
+    <!-- Upload Form -->
+    <form method="POST" enctype="multipart/form-data" action="{% url 'plant_disease_detection' %}"
+          class="bg-white/80 backdrop-blur-lg border border-green-200 p-8 rounded-2xl shadow-xl max-w-xl mx-auto">
         {% csrf_token %}
-        <div class="mb-4">
-            <label for="image" class="block text-lg font-medium text-gray-700">Select Image:</label>
-            <input type="file" name="image" id="image" class="mt-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500">
+        
+        <div class="mb-6">
+            <label for="image" class="block text-lg font-semibold text-gray-800 mb-2">
+                Select Plant Image:
+            </label>
+            <input type="file" name="image" id="image" accept="image/*" required
+                   class="block w-full border border-gray-300 rounded-lg shadow-sm p-2 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition">
         </div>
 
-        <button type="submit" class="btn btn-primary w-full">🔍 Detect Disease</button>
+        <button type="submit"
+                class="w-full bg-gradient-to-r from-green-600 to-lime-600 text-white py-3 px-4 rounded-xl font-semibold hover:from-green-700 hover:to-lime-700 transform hover:scale-105 transition duration-300">
+            🔍 Detect Disease
+        </button>
     </form>
 
-    <div class="mt-6 text-center">
-        <a href="{% url 'dashboard' %}" class="btn btn-success">Back to Dashboard</a>
+    <!-- Back Button -->
+    <div class="mt-8 text-center">
+        <a href="{% url 'dashboard' %}"
+           class="inline-block bg-gradient-to-r from-emerald-500 to-green-600 text-white py-2 px-6 rounded-xl font-semibold hover:from-emerald-600 hover:to-green-700 transform hover:scale-105 transition duration-300 shadow-md">
+            ⬅ Back to Dashboard
+        </a>
     </div>
+
 </div>
 {% endblock %}
