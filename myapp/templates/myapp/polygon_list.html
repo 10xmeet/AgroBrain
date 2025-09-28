@@ -1,0 +1,43 @@
+{% extends 'myapp/base.html' %}
+{% load static %}
+
+{% block title %}Polygon List{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-semibold text-center mb-6">Your Farm Polygons</h1>
+
+    <div class="flex justify-end mb-4">
+        <a href="{% url 'add_polygon' %}" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded">
+            Add New Polygon
+        </a>
+    </div>
+
+    {% if polygons %}
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+                <thead class="bg-emerald-600 text-white">
+                    <tr>
+                        <th class="py-3 px-6 text-left">Name</th>
+                        <th class="py-3 px-6 text-left">Polygon ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for poly in polygons %}
+                    <tr class="border-b hover:bg-gray-100">
+                        <td class="py-3 px-6">{{ poly.name }}</td>
+                        <td class="py-3 px-6">{{ poly.polygon_id }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td class="py-3 px-6" colspan="2">No polygons added yet.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No polygons found. <a href="{% url 'add_polygon' %}" class="text-emerald-600 underline">Add one now</a>.</p>
+    {% endif %}
+</div>
+{% endblock %}

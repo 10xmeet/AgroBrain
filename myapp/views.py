@@ -319,9 +319,29 @@ def main_dashboard(request):
     data = fetch_weather_data(polygon.polygon_id) if polygon else None
     return render(request, 'myapp/main_dashboard.html', {'data': data})
 @login_required
-def details(request, polygon_id):
-    details = get_object_or_404(Details, polygon__polygon_id=polygon_id)
-    api = details.api_key
+def details(request, polygon_identifier=None, polygon_id=None):
+    """Display details for a given polygon by ID or name."""
+    # If polygon_identifier not provided but polygon_id is (old URL param name), treat it the same
+    if polygon_identifier is None and polygon_id is not None:
+        polygon_identifier = polygon_id
+
+    # Fetch the Polygon object either by its polygon_id or by its name
+    polygon_obj = None
+    if polygon_identifier:
+        try:
+            polygon_obj = Polygon.objects.get(polygon_id=polygon_identifier)
+        except Polygon.DoesNotExist:
+            try:
+                polygon_obj = Polygon.objects.get(name=polygon_identifier)
+            except Polygon.DoesNotExist:
+                polygon_obj = None
+
+    if polygon_obj is None:
+        # Show 404 if not found
+        raise Http404("Polygon not found")
+
+    # At this point we definitely have a polygon object
+    polygon_id_value = polygon_obj.polygon_id
 
     # Get user input for start and end dates
     start_date = request.GET.get('start_date')
@@ -333,26 +353,44 @@ def details(request, polygon_id):
         end_datetime = timezone.make_aware(end_datetime, timezone.get_current_timezone())  # Make it timezone-aware
         end_timestamp = int(end_datetime.timestamp())
     else:
-        end_timestamp = details.end_date.timestamp()  # Default end timestamp
+        # Default end timestamp: current time
+        end_timestamp = int(timezone.now().timestamp())
 
     if start_date:
         start_datetime = datetime.strptime(start_date, '%Y-%m-%d')
         start_datetime = timezone.make_aware(start_datetime, timezone.get_current_timezone())  # Make it timezone-aware
         start_timestamp = int(start_datetime.timestamp())
     else:
-        start_timestamp = details.start_date.timestamp()  # Default start timestamp
+        # Default start timestamp: 30 days ago
+        start_timestamp = int((timezone.now() - timedelta(days=30)).timestamp())
+
+    # Determine API key for this polygon
+    try:
+        details_obj = Details.objects.get(polygon=polygon_obj)
+        api_key = details_obj.api_key
+    except Details.DoesNotExist:
+        api_key = "b4dfb6aa45d5601e695f381d85217b11"  # Fallback key
 
     # Fetch data from the API
-    result = requests.get(f"http://api.agromonitoring.com/agro/1.0/polygons/{polygon_id}?appid={api}")
-    ndvi = requests.get(f"http://api.agromonitoring.com/agro/1.0/ndvi/history?start={start_timestamp}&end={end_timestamp}&polyid={polygon_id}&appid={api}")
-    weather = requests.get(f"https://api.agromonitoring.com/agro/1.0/weather/forecast?lat={result.json()['center'][1]}&lon={result.json()['center'][0]}&appid={api}")
-    soil = requests.get(f"http://api.agromonitoring.com/agro/1.0/soil?polyid={polygon_id}&appid={api}")
-    uv_index = requests.get(f"http://api.agromonitoring.com/agro/1.0/uvi?polyid={polygon_id}&appid={api}")
+    result = requests.get(f"https://api.agromonitoring.com/agro/1.0/polygons/{polygon_id_value}?appid={api_key}")
+    ndvi = requests.get(f"https://api.agromonitoring.com/agro/1.0/ndvi/history?start={start_timestamp}&end={end_timestamp}&polyid={polygon_id_value}&appid={api_key}")
+    # Need lat lon from polygon result JSON
+    result_json = result.json()
+    lat = result_json.get('center', [0,0])[1]
+    lon = result_json.get('center', [0,0])[0]
+    weather = requests.get(f"https://api.agromonitoring.com/agro/1.0/weather/forecast?lat={lat}&lon={lon}&appid={api_key}")
+    soil = requests.get(f"https://api.agromonitoring.com/agro/1.0/soil?polyid={polygon_id_value}&appid={api_key}")
+    uv_index = requests.get(f"https://api.agromonitoring.com/agro/1.0/uvi?polyid={polygon_id_value}&appid={api_key}")
 
     # Process UV index data
     uv_index_data = uv_index.json()
-    uv_index_value = uv_index_data.get('uvi')
-    uv_index_date = datetime.utcfromtimestamp(uv_index_data.get('dt')).strftime('%Y-%m-%d %H:%M:%S')
+    if isinstance(uv_index_data, dict) and uv_index_data.get('dt') is not None:
+        uv_index_value = uv_index_data.get('uvi')
+        uv_index_date = datetime.utcfromtimestamp(uv_index_data.get('dt')).strftime('%Y-%m-%d %H:%M:%S')
+    else:
+        # Handle cases where the API does not return data (e.g., outside valid range for UVI)
+        uv_index_value = None
+        uv_index_date = None
 
     # Process vegetation index data
     ndvi_data = ndvi.json()
@@ -409,18 +447,19 @@ def details(request, polygon_id):
 
     return render(request, "myapp/details.html", {
         "api_data_json": result.json(),
-        "ndvi_data_json": ndvi_data,
+        "ndvi_data_json": json.dumps(ndvi_data),
         "start_date": start_date,
         "end_date": end_date,
-        "polygon_id": polygon_id,
-        "weather": weather.json(),
-        "soil": soil.json(),
+        "polygon_id": polygon_id_value,
+        "weather": json.dumps(weather.json()),
+        "soil": json.dumps(soil.json()),
         "uv_index_value": uv_index_value,
         "uv_index_date": uv_index_date,
-        "veg_index_data": veg_index_data,
+        "veg_index_data": json.dumps(veg_index_data),
         "index_type": index_type,
-        "available_indices": available_indices
-    })
+        "available_indices": json.dumps(available_indices),
+        "polygons": Polygon.objects.all(),
+     })
     
     
 
